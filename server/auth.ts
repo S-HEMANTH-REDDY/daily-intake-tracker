@@ -1,4 +1,5 @@
-import { ACCOUNTS, getAccount, pinFor, type Role } from './accounts'
+import { ACCOUNTS, getAccount, pinFor, type Role } from './accounts.js'
+import { env } from './env.js'
 
 const COOKIE = 'intake_session'
 const MAX_AGE_SEC = 60 * 60 * 24 * 30
@@ -10,7 +11,7 @@ export interface Session {
 }
 
 function secret(): string {
-  const value = process.env.SESSION_SECRET?.trim()
+  const value = env('SESSION_SECRET')?.trim()
   if (!value) throw new Error('SESSION_SECRET is not set')
   return value
 }
@@ -70,12 +71,12 @@ export async function readSession(request: Request): Promise<Session | null> {
 }
 
 export function sessionCookie(token: string): string {
-  const secure = process.env.VERCEL ? '; Secure' : ''
+  const secure = env('VERCEL') ? '; Secure' : ''
   return `${COOKIE}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${MAX_AGE_SEC}${secure}`
 }
 
 export function clearSessionCookie(): string {
-  const secure = process.env.VERCEL ? '; Secure' : ''
+  const secure = env('VERCEL') ? '; Secure' : ''
   return `${COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${secure}`
 }
 

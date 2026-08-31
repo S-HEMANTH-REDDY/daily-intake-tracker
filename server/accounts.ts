@@ -1,4 +1,5 @@
-import type { ActivityLevel, Sex } from '../src/users/types'
+import type { ActivityLevel, Sex } from '../src/users/types.js'
+import { env } from './env.js'
 
 export type Role = 'admin' | 'member'
 
@@ -44,6 +45,6 @@ export function getAccount(id: string): Account | undefined {
 }
 
 export function pinFor(account: Account): string | undefined {
-  const value = process.env[account.pinEnv]?.trim()
+  const value = env(account.pinEnv)?.trim()
   return value || undefined
 }

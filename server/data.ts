@@ -1,8 +1,8 @@
-import type { Food } from '../src/foods/types'
-import type { LogEntry } from '../src/storage/schema'
-import type { UserProfile } from '../src/users/types'
-import { getAccount } from './accounts'
-import { ensureSchema, getSql } from './db'
+import type { Food } from '../src/foods/types.js'
+import type { LogEntry } from '../src/storage/schema.js'
+import type { UserProfile } from '../src/users/types.js'
+import { getAccount } from './accounts.js'
+import { ensureSchema, getSql } from './db.js'
 
 export async function loadUsers(): Promise<UserProfile[]> {
   await ensureSchema()

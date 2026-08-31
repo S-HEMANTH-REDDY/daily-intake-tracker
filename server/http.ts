@@ -1,4 +1,4 @@
-import { handleApi } from './router'
+import { handleApi } from './router.js'
 
 export function GET(request: Request) {
   return handleApi(request)

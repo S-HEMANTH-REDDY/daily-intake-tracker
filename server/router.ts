@@ -1,4 +1,4 @@
-import { getAccount } from './accounts'
+import { getAccount } from './accounts.js'
 import {
   clearSessionCookie,
   publicAccounts,
@@ -7,7 +7,7 @@ import {
   signSession,
   targetUserId,
   verifyPin,
-} from './auth'
+} from './auth.js'
 import {
   addOrMergeLog,
   deleteLog,
@@ -18,9 +18,9 @@ import {
   resetLogs,
   updateLogQuantity,
   updateProfile,
-} from './data'
-import type { Food } from '../src/foods/types'
-import type { UserProfile } from '../src/users/types'
+} from './data.js'
+import type { Food } from '../src/foods/types.js'
+import type { UserProfile } from '../src/users/types.js'
 
 function json(data: unknown, status = 200, extra?: HeadersInit): Response {
   return new Response(JSON.stringify(data), {
