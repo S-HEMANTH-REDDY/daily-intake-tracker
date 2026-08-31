@@ -29,7 +29,7 @@ export function Layout() {
       {viewingOther ? (
         <p className="mb-4 rounded-2xl bg-amber-soft px-4 py-2 text-sm text-amber">
           Admin view: you are looking at <span className="font-semibold">{activeUser.displayName}</span>
-          ’s logs. Anything you add or reset applies to her.
+          ’s logs. Logged times are shown on Today and Log. Anything you add or reset applies to her.
         </p>
       ) : null}
       {error ? (

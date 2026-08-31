@@ -43,3 +43,16 @@ export function roundDisplay(value: number, digits = 0): string {
 export function clamp(n: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, n))
 }
+
+export function formatLogTime(iso: string): string | null {
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return null
+  return date.toLocaleTimeString(undefined, {
+    hour: 'numeric',
+    minute: '2-digit',
+  })
+}
+
+export function logWasUpdated(entry: { createdAt: string; updatedAt: string }): boolean {
+  return new Date(entry.updatedAt).getTime() - new Date(entry.createdAt).getTime() > 60_000
+}

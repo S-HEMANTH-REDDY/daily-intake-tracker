@@ -10,9 +10,11 @@ import type { Food } from '../foods/types'
 import { CATEGORY_META } from '../foods/catalog'
 import { useAppStore } from '../storage/context'
 import { useDayData } from '../daily-log/useDayData'
+import { useAdminViewingOther } from '../hooks/useAdminViewingOther'
 
 export function LogPage() {
   const store = useAppStore()
+  const adminViewingOther = useAdminViewingOther()
   const date = todayKey()
   const { entries } = useDayData(date)
   const [selected, setSelected] = useState<Food | null>(null)
@@ -56,9 +58,13 @@ export function LogPage() {
       <FoodSearch extraFoods={store.customFoods} onSelect={choose} />
 
       <h2 className="font-display text-2xl">Today's log</h2>
+      {adminViewingOther ? (
+        <p className="text-sm text-ink-soft">Logged times shown — oldest first.</p>
+      ) : null}
       <FoodLog
         entries={entries}
         extraFoods={store.customFoods}
+        showTimestamps={adminViewingOther}
         onQuantity={(id, quantity) => store.updateLog(id, { quantity })}
         onRemove={store.removeLog}
       />

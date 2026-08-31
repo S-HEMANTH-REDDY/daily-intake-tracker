@@ -9,6 +9,7 @@ import { NutrientCard } from '../components/NutrientCard'
 import { shiftDateKey, todayKey } from '../calculations/dates'
 import { statusForGoal, statusForLimit } from '../calculations/status'
 import { useDayData } from '../daily-log/useDayData'
+import { useAdminViewingOther } from '../hooks/useAdminViewingOther'
 import { useAppStore } from '../storage/context'
 
 function nutrientIntake(id: string, nutrients: NutrientProfile) {
@@ -23,6 +24,7 @@ function nutrientIntake(id: string, nutrients: NutrientProfile) {
 
 export function DashboardPage() {
   const store = useAppStore()
+  const adminViewingOther = useAdminViewingOther()
   const [date, setDate] = useState(todayKey)
   const { entries, totals, targets, guidelines } = useDayData(date)
   const isToday = date === todayKey()
@@ -144,9 +146,15 @@ export function DashboardPage() {
       </div>
 
       <h2 className="font-display text-2xl">What {store.activeUser.displayName} ate</h2>
+      {adminViewingOther ? (
+        <p className="text-sm text-ink-soft">
+          Admin view — each item shows when it was logged (your local time).
+        </p>
+      ) : null}
       <FoodLog
         entries={entries}
         extraFoods={store.customFoods}
+        showTimestamps={adminViewingOther}
         onQuantity={(id, quantity) => store.updateLog(id, { quantity })}
         onRemove={store.removeLog}
       />
