@@ -351,10 +351,10 @@ export const EXTRA_COOKIES: Food[] = [
   },
   {
     id: 'oreo-double-stuf',
-    name: 'Oreo Double Stuf',
+    name: 'Oreo — Double Stuf (bigger packaged)',
     brand: 'Nabisco',
     category: 'cookies',
-    servingLabel: '1 cookie',
+    servingLabel: '1 Double Stuf cookie',
     increment: 1,
     nutrition: n({
       calories: 70,
@@ -369,7 +369,8 @@ export const EXTRA_COOKIES: Food[] = [
     source: {
       name: 'Nabisco Oreo Double Stuf Nutrition Facts',
       url: 'https://www.oreo.com/',
-      notes: 'Label serving is typically 2 cookies / 70 g class: 140 kcal and 13 g added sugar. Per-cookie values are divided by 2.',
+      notes:
+        'Per cookie ≈ 1.3 cookie units (~6.5 g added sugar) — bigger than regular Oreo, much smaller than bakery FSCOREO.',
     },
     aliases: ['double stuff oreo', 'double stuf'],
   },

@@ -6,11 +6,37 @@ import { n } from './nutrients'
 
 export const FOOD_CATALOG: Food[] = [
   {
-    id: 'oreo-original',
-    name: 'Oreo',
+    id: 'oreo-mini',
+    name: 'Oreo — mini (very small)',
     brand: 'Nabisco',
     category: 'cookies',
-    servingLabel: '1 cookie',
+    servingLabel: '1 mini cookie',
+    increment: 1,
+    nutrition: n({
+      calories: 140 / 7,
+      totalFatG: 7 / 7,
+      saturatedFatG: 2 / 7,
+      sodiumMg: 95 / 7,
+      carbsG: 20 / 7,
+      fiberG: 0.2,
+      totalSugarG: 13 / 7,
+      addedSugarG: 13 / 7,
+      proteinG: 1 / 7,
+    }),
+    source: {
+      name: 'Nabisco Oreo Mini Nutrition Facts',
+      url: 'https://www.oreo.com/',
+      notes:
+        'Label serving is 7 mini cookies: 140 kcal, 13 g added sugar. Per mini ≈ 0.4 cookie units toward the cookie limit (much less than a regular Oreo).',
+    },
+    aliases: ['mini oreo', 'minis', 'small oreo', 'very small oreo'],
+  },
+  {
+    id: 'oreo-original',
+    name: 'Oreo — regular size (packaged)',
+    brand: 'Nabisco',
+    category: 'cookies',
+    servingLabel: '1 regular cookie',
     increment: 1,
     nutrition: n({
       calories: 160 / 3,
@@ -26,16 +52,17 @@ export const FOOD_CATALOG: Food[] = [
     source: {
       name: 'Nabisco Oreo Original Nutrition Facts',
       url: 'https://www.oreo.com/',
-      notes: 'Label serving is 3 cookies (34 g): 160 kcal, 7 g fat, 2 g sat. fat, 90 mg sodium, 25 g carb, 14 g added sugar, 1 g protein. Values here are divided by 3 so you can log individual cookies.',
+      notes:
+        'Label serving is 3 cookies (34 g): 160 kcal, 14 g added sugar total. Per regular cookie ≈ 1 cookie unit (~4.7 g sugar). Use this for standard packaged Oreos — not bakery FSCOREO.',
     },
-    aliases: ['oreos', 'oreo cookie', 'packaged oreo', 'nabisco oreo'],
+    aliases: ['oreos', 'oreo cookie', 'packaged oreo', 'nabisco oreo', 'normal oreo', 'regular oreo'],
   },
   {
     id: 'bakery-fscoreo-large',
-    name: 'Large bakery Oreo-style cookie (FSCOREO)',
+    name: 'Oreo-style — large bakery (FSCOREO)',
     brand: 'Store bakery',
     category: 'cookies',
-    servingLabel: '1 large cookie (10-count bakery pack)',
+    servingLabel: '1 large bakery cookie',
     increment: 1,
     nutrition: n({
       calories: 215,
@@ -52,7 +79,7 @@ export const FOOD_CATALOG: Food[] = [
     source: {
       name: 'Visual estimate — large bakery Oreo-style cookie (not Nabisco label)',
       notes:
-        'NOT the same as packaged Nabisco Oreos (~5 g sugar each). These are much larger and thicker with extra cream. Mid-range estimate per cookie: ~215 kcal, ~16 g sugar, ~10 g fat, ~30 g carbs. Sticker on the 10-count clamshell is a freshness/date label only — no official nutrition facts. Ranges used: 180–250 kcal, 12–20 g sugar, 8–12 g fat per cookie. A full 10-pack could be roughly 1,800–2,500 kcal and 120–200 g sugar.',
+        'NOT packaged Nabisco Oreos. Visual estimate for thick store-bakery cookies (~16 g sugar each) ≈ **3.2 cookie units** per cookie toward the limit. 10-count clamshell sticker is freshness only. One of these counts like ~3 regular cookies.',
     },
     aliases: [
       'fscoreo',

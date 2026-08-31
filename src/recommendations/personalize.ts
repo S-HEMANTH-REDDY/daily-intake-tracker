@@ -154,7 +154,7 @@ export function buildCategoryGuidelines(user: UserProfile): CategoryGuideline[] 
       unit: 'cookies',
       value: cookies,
       kind: 'app_guideline',
-      derivation: `There is no official medical limit of “${cookies} cookies per day.” This is an app tracking threshold derived from the AHA added-sugar upper limit (${sugarLimit} g) divided by ~5 g added sugar in a typical packaged sandwich cookie (e.g. one Oreo). Larger bakery cookies can use most or all of that sugar budget in a single cookie — the nutrient dashboard is the more meaningful check.`,
+      derivation: `There is no official medical limit of “${cookies} cookies per day.” This threshold uses size-weighted cookie units (not just how many you ate): 1 regular packaged cookie ≈ 1 unit (~5 g added sugar). Mini cookies ≈ 0.4 unit. Large bakery Oreo-style (FSCOREO) ≈ 3+ units. Two big bakery cookies can exceed this ${cookies}-unit guideline even though you only ate “2.” Added sugar on the nutrient cards is the stronger check.`,
     },
     {
       category: 'chocolate_candy',

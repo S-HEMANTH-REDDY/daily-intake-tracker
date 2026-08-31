@@ -1,5 +1,6 @@
 import { scaleNutrition } from '../nutrition/scale'
 import { roundDisplay } from '../calculations/dates'
+import { cookieCategoryUnits, cookieUnitsLabel } from '../foods/cookie-units'
 import type { Food } from '../foods/types'
 import { CATEGORY_META } from '../foods/catalog'
 
@@ -14,6 +15,8 @@ export function FoodCard({
 }) {
   const n = scaleNutrition(food.nutrition, quantity)
   const meta = CATEGORY_META[food.category]
+  const cookieUnits =
+    food.category === 'cookies' ? cookieUnitsLabel(cookieCategoryUnits(food, quantity)) : null
 
   return (
     <button
@@ -34,6 +37,7 @@ export function FoodCard({
         <p className="mt-2 text-xs text-ink-soft">
           {roundDisplay(n.calories, 0)} kcal · {roundDisplay(n.addedSugarG, 1)} g added sugar ·{' '}
           {roundDisplay(n.saturatedFatG, 1)} g sat. fat · {roundDisplay(n.sodiumMg, 0)} mg sodium
+          {cookieUnits ? ` · ${cookieUnits}` : ''}
         </p>
       </div>
     </button>

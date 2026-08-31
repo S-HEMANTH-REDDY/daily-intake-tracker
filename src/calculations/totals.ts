@@ -1,4 +1,5 @@
 import type { NutrientProfile } from '../nutrition/types'
+import { cookieCategoryUnits } from '../foods/cookie-units'
 import { scaleNutrition, sumNutrition } from '../nutrition/scale'
 import type { Food, FoodCategory } from '../foods/types'
 import { FOOD_CATEGORIES } from '../foods/types'
@@ -25,8 +26,13 @@ export function computeDailyTotals(
     const food = foodsById.get(entry.foodId)
     if (!food || entry.quantity <= 0) continue
     scaled.push(scaleNutrition(food.nutrition, entry.quantity))
-    if (food.category === 'sugary_drinks' && food.nutrition.addedSugarG <= 0) continue
-    categoryServings[food.category] += entry.quantity
+    if (food.category === 'sugary_drinks' && food.nutrition.addedSugarG <= 0) {
+      // zero-sugar sodas: log nutrients only
+    } else if (food.category === 'cookies') {
+      categoryServings.cookies += cookieCategoryUnits(food, entry.quantity)
+    } else {
+      categoryServings[food.category] += entry.quantity
+    }
   }
 
   return {
