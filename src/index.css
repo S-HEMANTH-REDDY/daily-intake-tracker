@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --color-parchment: #f3eee4;
+  --color-card: #fffaf3;
+  --color-ink: #241c16;
+  --color-ink-soft: #5c5148;
+  --color-line: #e4d9cb;
+  --color-sage: #2f5d4a;
+  --color-sage-2: #4a7c65;
+  --color-sage-soft: #dce8e1;
+  --color-amber: #c47a1a;
+  --color-amber-soft: #f6e6c8;
+  --color-coral: #c45c3e;
+  --color-coral-soft: #f6ddd4;
+  --color-cocoa: #6b3f2a;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background:
+    radial-gradient(1200px 500px at 10% -10%, #efe4d2 0%, transparent 55%),
+    radial-gradient(900px 420px at 110% 0%, #e4eee7 0%, transparent 50%),
+    var(--color-parchment);
+  color: var(--color-ink);
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+::selection {
+  background: #dce8e1;
+}
+
+.num,
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+}
+
+.card-shadow {
+  box-shadow: 0 1px 0 rgba(36, 28, 22, 0.04), 0 12px 32px -18px rgba(36, 28, 22, 0.28);
+}

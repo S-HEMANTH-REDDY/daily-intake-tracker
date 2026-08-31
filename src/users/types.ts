@@ -1,0 +1,22 @@
+export const SEX_OPTIONS = ['female', 'male', 'unspecified'] as const
+export type Sex = (typeof SEX_OPTIONS)[number]
+
+export const ACTIVITY_LEVELS = [
+  'sedentary',
+  'light',
+  'moderate',
+  'active',
+  'very_active',
+] as const
+export type ActivityLevel = (typeof ACTIVITY_LEVELS)[number]
+
+export interface UserProfile {
+  id: string
+  displayName: string
+  age: number | null
+  sex: Sex
+  heightCm: number | null
+  weightKg: number | null
+  activityLevel: ActivityLevel
+  createdAt: string
+}
