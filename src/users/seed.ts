@@ -2,6 +2,7 @@ export const SEED_USERS = [
   {
     id: 'user-hemanth',
     displayName: 'Hemanth',
+    role: 'admin' as const,
     age: null as number | null,
     sex: 'unspecified' as const,
     heightCm: null as number | null,
@@ -12,6 +13,7 @@ export const SEED_USERS = [
   {
     id: 'user-sreenidhee',
     displayName: 'Sreenidhee',
+    role: 'member' as const,
     age: 23,
     sex: 'female' as const,
     heightCm: null as number | null,

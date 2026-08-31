@@ -27,30 +27,34 @@ export function CustomFoodPage() {
       className="mx-auto max-w-xl space-y-4"
       onSubmit={(e) => {
         e.preventDefault()
-        const food = store.addCustomFood({
-          name: name.trim(),
-          category,
-          servingLabel: servingLabel.trim() || '1 serving',
-          increment: 1,
-          nutrition: {
-            calories: Number(calories) || 0,
-            totalFatG: Number(totalFat) || 0,
-            saturatedFatG: Number(satFat) || 0,
-            transFatG: 0,
-            cholesterolMg: 0,
-            sodiumMg: Number(sodium) || 0,
-            carbsG: Number(carbs) || 0,
-            fiberG: Number(fiber) || 0,
-            totalSugarG: Number(totalSugar) || Number(addedSugar) || 0,
-            addedSugarG: Number(addedSugar) || 0,
-            proteinG: Number(protein) || 0,
-          },
-          source: { name: 'Custom food entered by user' },
+        void (async () => {
+          const food = await store.addCustomFood({
+            name: name.trim(),
+            category,
+            servingLabel: servingLabel.trim() || '1 serving',
+            increment: 1,
+            nutrition: {
+              calories: Number(calories) || 0,
+              totalFatG: Number(totalFat) || 0,
+              saturatedFatG: Number(satFat) || 0,
+              transFatG: 0,
+              cholesterolMg: 0,
+              sodiumMg: Number(sodium) || 0,
+              carbsG: Number(carbs) || 0,
+              fiberG: Number(fiber) || 0,
+              totalSugarG: Number(totalSugar) || Number(addedSugar) || 0,
+              addedSugarG: Number(addedSugar) || 0,
+              proteinG: Number(protein) || 0,
+            },
+            source: { name: 'Custom food entered by user' },
+          })
+          if (addToToday) {
+            await store.addLog({ foodId: food.id, quantity: 1, date: todayKey() })
+          }
+          navigate('/')
+        })().catch((err: Error) => {
+          window.alert(err.message)
         })
-        if (addToToday) {
-          store.addLog({ foodId: food.id, quantity: 1, date: todayKey() })
-        }
-        navigate('/')
       }}
     >
       <div>

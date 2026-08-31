@@ -11,10 +11,14 @@ node_modules
 dist
 dist-ssr
 *.local
+.vercel
+.agents
+skills-lock.json
+
+# Env files (keep the example)
 .env
 .env.*
 !.env.example
-.vercel
 
 # Editor directories and files
 .vscode/*

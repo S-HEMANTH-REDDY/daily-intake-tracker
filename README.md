@@ -21,7 +21,7 @@ GitHub: [S-HEMANTH-REDDY/daily-intake-tracker](https://github.com/S-HEMANTH-REDD
 - Tailwind CSS
 - React Router
 - Recharts
-- LocalStorage persistence (storage adapter is isolated so login/cloud sync can replace it later)
+- Shared Postgres (Neon) so both people see the same logs on the same link
 
 ## Quick start
 
@@ -37,16 +37,16 @@ npm run build
 npm run preview
 ```
 
-No environment variables are required for the current localStorage version.
+Local API needs the same env vars as production (see `.env.example`). Copy to `.env.local` — never commit PINs.
 
 ## Profiles
 
-Two starter profiles ship with the app:
+Two fixed accounts. There is no signup and no “add person.”
 
-1. **Hemanth** — editable “my profile.” Complete age, sex, height, weight, and activity for personalized calorie/protein math.
-2. **Sreenidhee** — age 23, female. Calorie estimate uses Dietary Guidelines age/sex/activity tables until height and weight are added.
+1. **Hemanth (Admin)** — can view either log and reset today or all logs.
+2. **Sreenidhee** — her own log only.
 
-Each profile has isolated food logs, daily totals, nutrition targets, custom foods, and history. Add more people from **You**.
+Logs live in the shared database, so the same public URL is consistent on every phone and browser. PIN values are server env vars, not in this repo.
 
 ## Two-layer limits
 
@@ -95,32 +95,25 @@ src/
   history/          snapshots, averages
   statistics/       days over/under guidelines
   components/       FoodCard, IntakeCounter, ProgressBar, NutrientCard, …
-  storage/          schema, localStorage adapter, AppProvider
+  storage/          AppProvider + API client
+  server/           PIN session, Postgres, API router
+  api/              Vercel functions
   pages/            Today, Log, History, Profile, Sources, Custom food
 ```
 
 Nutrition is never duplicated in UI components. `scaleNutrition(food.nutrition, quantity)` is the only multiplier. `computeDailyTotals` is used on Today, Log, and History.
 
-## Persistence & future sync
+## Persistence
 
-Data lives in `localStorage` under `daily-intake-tracker:v1`, keyed by user id.
-
-The `StorageAdapter` interface (`load` / `save`) is the seam for later:
-
-- login
-- cloud sync
-- multi-device
-- a real database
-
-No secrets or API keys are used today.
+Food logs, custom foods, and profiles are stored in Neon Postgres. Sign-in is a per-person PIN in an httpOnly cookie. PINs and `SESSION_SECRET` are Vercel environment variables (sensitive). They are not shipped in client JavaScript.
 
 ## Deploy (Vercel)
 
 1. Push this repo to GitHub.
-2. Import the project in Vercel (framework: Vite).
+2. Attach Neon (`npx vercel integration add neon`) and set `PIN_HEMANTH`, `PIN_SREENIDHEE`, and `SESSION_SECRET`.
 3. Build command: `npm run build`
 4. Output directory: `dist`
-5. `vercel.json` already rewrites all routes to `index.html` for client-side routing.
+5. `vercel.json` sends non-API routes to `index.html`.
 
 ```bash
 npx vercel --prod

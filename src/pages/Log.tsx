@@ -26,7 +26,7 @@ export function LogPage() {
 
   function add() {
     if (!selected) return
-    store.addLog({ foodId: selected.id, quantity: qty, date })
+    void store.addLog({ foodId: selected.id, quantity: qty, date })
     setJustAdded(`${roundDisplay(qty, 1)} × ${selected.name}`)
     setSelected(null)
   }

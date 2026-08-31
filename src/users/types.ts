@@ -10,9 +10,12 @@ export const ACTIVITY_LEVELS = [
 ] as const
 export type ActivityLevel = (typeof ACTIVITY_LEVELS)[number]
 
+export type UserRole = 'admin' | 'member'
+
 export interface UserProfile {
   id: string
   displayName: string
+  role: UserRole
   age: number | null
   sex: Sex
   heightCm: number | null

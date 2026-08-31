@@ -2,6 +2,7 @@ import { NavLink, Outlet } from 'react-router-dom'
 import { BookOpen, ClipboardList, History, LayoutDashboard, UserRound } from 'lucide-react'
 import { UserSelector } from './UserSelector'
 import { Disclaimer } from './Disclaimer'
+import { useAppStore } from '../storage/context'
 
 const NAV = [
   { to: '/', label: 'Today', icon: LayoutDashboard, end: true },
@@ -12,6 +13,9 @@ const NAV = [
 ]
 
 export function Layout() {
+  const { error, busy, sessionRole, activeUser, sessionUserId } = useAppStore()
+  const viewingOther = sessionRole === 'admin' && activeUser.id !== sessionUserId
+
   return (
     <div className="mx-auto flex min-h-dvh max-w-6xl flex-col px-4 pt-4 pb-24 sm:pb-8">
       <header className="mb-6 flex items-center justify-between gap-3">
@@ -21,6 +25,17 @@ export function Layout() {
         </div>
         <UserSelector />
       </header>
+
+      {viewingOther ? (
+        <p className="mb-4 rounded-2xl bg-amber-soft px-4 py-2 text-sm text-amber">
+          Admin view: you are looking at <span className="font-semibold">{activeUser.displayName}</span>
+          ’s logs. Anything you add or reset applies to her.
+        </p>
+      ) : null}
+      {error ? (
+        <p className="mb-4 rounded-2xl bg-coral-soft px-4 py-2 text-sm text-coral">{error}</p>
+      ) : null}
+      {busy ? <p className="mb-2 text-xs text-ink-soft">Updating…</p> : null}
 
       <div className="flex gap-6">
         <nav className="sticky top-6 hidden h-fit w-44 shrink-0 flex-col gap-1 sm:flex">

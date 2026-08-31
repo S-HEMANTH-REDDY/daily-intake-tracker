@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { ACTIVITY_LEVELS, SEX_OPTIONS, type ActivityLevel, type Sex } from '../users/types'
 import { useAppStore } from '../storage/context'
 import { buildNutrientTargets } from '../recommendations/personalize'
@@ -13,104 +13,38 @@ const ACTIVITY_LABELS: Record<ActivityLevel, string> = {
 }
 
 export function ProfilePage() {
-  const { state, activeUser, updateUser, addUser, setActiveUser } = useAppStore()
-  const [adding, setAdding] = useState(false)
-  const [newName, setNewName] = useState('')
-  const [newAge, setNewAge] = useState('')
-  const [newSex, setNewSex] = useState<Sex>('unspecified')
+  const { state, activeUser, updateUser, setActiveUser, sessionRole, resetLogs, busy } = useAppStore()
   const targets = buildNutrientTargets(activeUser)
   const energy = calorieTarget(activeUser)
+  const isAdmin = sessionRole === 'admin'
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-3xl">Profiles</h1>
+        <h1 className="font-display text-3xl">{isAdmin ? 'Profiles' : 'Your profile'}</h1>
         <p className="mt-1 text-ink-soft">
-          Each person has separate logs, totals, targets, and history. Switching profiles never mixes data.
+          {isAdmin
+            ? 'Switch whose log you are viewing. Reset is admin-only and cannot be undone.'
+            : 'Your log is only yours. Height, weight, and activity change calorie and protein targets.'}
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        {state.users.map((user) => (
-          <button
-            key={user.id}
-            type="button"
-            onClick={() => setActiveUser(user.id)}
-            className={`rounded-full px-4 py-2 text-sm font-semibold ${
-              user.id === activeUser.id ? 'bg-sage text-white' : 'bg-card text-ink'
-            }`}
-          >
-            {user.displayName}
-          </button>
-        ))}
-        <button
-          type="button"
-          onClick={() => setAdding(true)}
-          className="rounded-full border border-dashed border-line px-4 py-2 text-sm font-semibold"
-        >
-          Add person
-        </button>
-      </div>
-
-      {adding ? (
-        <form
-          className="card-shadow space-y-3 rounded-3xl bg-card p-5"
-          onSubmit={(e) => {
-            e.preventDefault()
-            if (!newName.trim()) return
-            addUser({
-              displayName: newName.trim(),
-              age: newAge ? Number(newAge) : null,
-              sex: newSex,
-              heightCm: null,
-              weightKg: null,
-              activityLevel: 'moderate',
-            })
-            setAdding(false)
-            setNewName('')
-            setNewAge('')
-            setNewSex('unspecified')
-          }}
-        >
-          <h2 className="font-semibold">New profile</h2>
-          <input
-            required
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            placeholder="Name"
-            className="w-full rounded-2xl border border-line px-3 py-2.5"
-          />
-          <div className="grid grid-cols-2 gap-3">
-            <input
-              value={newAge}
-              onChange={(e) => setNewAge(e.target.value)}
-              placeholder="Age"
-              type="number"
-              min={1}
-              max={120}
-              className="rounded-2xl border border-line px-3 py-2.5"
-            />
-            <select
-              value={newSex}
-              onChange={(e) => setNewSex(e.target.value as Sex)}
-              className="rounded-2xl border border-line px-3 py-2.5"
+      {isAdmin ? (
+        <div className="flex flex-wrap gap-2">
+          {state.users.map((user) => (
+            <button
+              key={user.id}
+              type="button"
+              onClick={() => void setActiveUser(user.id)}
+              className={`rounded-full px-4 py-2 text-sm font-semibold ${
+                user.id === activeUser.id ? 'bg-sage text-white' : 'bg-card text-ink'
+              }`}
             >
-              {SEX_OPTIONS.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex gap-2">
-            <button type="submit" className="rounded-full bg-sage px-4 py-2 text-sm font-semibold text-white">
-              Save
+              {user.displayName}
+              {user.role === 'admin' ? ' · Admin' : ''}
             </button>
-            <button type="button" onClick={() => setAdding(false)} className="rounded-full px-4 py-2 text-sm">
-              Cancel
-            </button>
-          </div>
-        </form>
+          ))}
+        </div>
       ) : null}
 
       <form
@@ -192,6 +126,42 @@ export function ProfilePage() {
           </select>
         </Field>
       </form>
+
+      {isAdmin ? (
+        <section className="card-shadow space-y-3 rounded-3xl bg-card p-5">
+          <h2 className="font-display text-2xl">Admin reset</h2>
+          <p className="text-sm text-ink-soft">
+            Clears food logs for {activeUser.displayName}. Custom foods and profile details stay.
+            Sreenidhee cannot do this.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => {
+                if (confirm(`Clear today's log for ${activeUser.displayName}?`)) {
+                  void resetLogs(activeUser.id, 'today')
+                }
+              }}
+              className="rounded-full bg-amber px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
+            >
+              Reset today
+            </button>
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => {
+                if (confirm(`Delete ALL logs for ${activeUser.displayName}? This cannot be undone.`)) {
+                  void resetLogs(activeUser.id, 'all')
+                }
+              }}
+              className="rounded-full bg-coral px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
+            >
+              Reset all logs
+            </button>
+          </div>
+        </section>
+      ) : null}
 
       <section className="card-shadow rounded-3xl bg-card p-5">
         <h2 className="font-display text-2xl">Current targets</h2>
