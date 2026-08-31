@@ -2,6 +2,7 @@ import { NavLink, Outlet } from 'react-router-dom'
 import { BookOpen, ClipboardList, History, LayoutDashboard, UserRound } from 'lucide-react'
 import { UserSelector } from './UserSelector'
 import { Disclaimer } from './Disclaimer'
+import { MemberPrivacyNotice } from './MemberPrivacyNotice'
 import { useAppStore } from '../storage/context'
 
 const NAV = [
@@ -13,8 +14,10 @@ const NAV = [
 ]
 
 export function Layout() {
-  const { error, busy, sessionRole, activeUser, sessionUserId } = useAppStore()
+  const { error, busy, sessionRole, activeUser, sessionUserId, state } = useAppStore()
   const viewingOther = sessionRole === 'admin' && activeUser.id !== sessionUserId
+  const adminName = state.users.find((u) => u.role === 'admin')?.displayName ?? 'Admin'
+  const isMember = sessionRole === 'member'
 
   return (
     <div className="mx-auto flex min-h-dvh max-w-6xl flex-col px-4 pt-4 pb-24 sm:pb-8">
@@ -32,6 +35,7 @@ export function Layout() {
           ’s logs. Logged times are shown on Today and Log. Anything you add or reset applies to her.
         </p>
       ) : null}
+      {isMember ? <MemberPrivacyNotice adminName={adminName} /> : null}
       {error ? (
         <p className="mb-4 rounded-2xl bg-coral-soft px-4 py-2 text-sm text-coral">{error}</p>
       ) : null}

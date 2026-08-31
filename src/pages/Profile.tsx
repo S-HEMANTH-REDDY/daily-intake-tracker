@@ -3,6 +3,7 @@ import { ACTIVITY_LEVELS, SEX_OPTIONS, type ActivityLevel, type Sex } from '../u
 import { useAppStore } from '../storage/context'
 import { buildNutrientTargets } from '../recommendations/personalize'
 import { calorieTarget } from '../calculations/energy'
+import { MemberPrivacyNotice } from '../components/MemberPrivacyNotice'
 
 const ACTIVITY_LABELS: Record<ActivityLevel, string> = {
   sedentary: 'Sedentary (little or no exercise)',
@@ -17,6 +18,7 @@ export function ProfilePage() {
   const targets = buildNutrientTargets(activeUser)
   const energy = calorieTarget(activeUser)
   const isAdmin = sessionRole === 'admin'
+  const adminName = state.users.find((u) => u.role === 'admin')?.displayName ?? 'Admin'
 
   return (
     <div className="space-y-6">
@@ -25,9 +27,11 @@ export function ProfilePage() {
         <p className="mt-1 text-ink-soft">
           {isAdmin
             ? 'Switch whose log you are viewing. Reset is admin-only and cannot be undone.'
-            : 'Your log is only yours. Height, weight, and activity change calorie and protein targets.'}
+            : 'Update your details here. Your food log is shared with the admin account (see below).'}
         </p>
       </div>
+
+      {!isAdmin ? <MemberPrivacyNotice adminName={adminName} variant="card" /> : null}
 
       {isAdmin ? (
         <div className="flex flex-wrap gap-2">

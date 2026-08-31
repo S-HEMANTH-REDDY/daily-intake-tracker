@@ -68,7 +68,9 @@ export function LoginScreen({ onLoggedIn }: { onLoggedIn: () => Promise<void> })
           >
             <p className="font-display text-xl">{account.displayName}</p>
             <p className={`text-sm ${accountId === account.id ? 'text-white/80' : 'text-ink-soft'}`}>
-              {account.role === 'admin' ? 'Admin — can view both logs and reset' : 'Your own logs only'}
+              {account.role === 'admin'
+                ? 'Admin — can view both logs, add entries, and reset'
+                : 'Your log — Hemanth (admin) can also view and manage it'}
             </p>
           </button>
         ))}
@@ -76,6 +78,13 @@ export function LoginScreen({ onLoggedIn }: { onLoggedIn: () => Promise<void> })
 
       {selected ? (
         <form className="card-shadow mt-6 space-y-3 rounded-3xl bg-card p-5" onSubmit={submit}>
+          {selected.role === 'member' ? (
+            <p className="rounded-2xl bg-sage-soft/80 px-3 py-2.5 text-sm text-ink">
+              <span className="font-semibold">Privacy:</span> Hemanth (admin) can view your log,
+              see when you logged each item, add or edit food for you, reset logs, and update your
+              profile.
+            </p>
+          ) : null}
           <label className="block text-sm">
             <span className="mb-1.5 block font-medium text-ink-soft">PIN for {selected.displayName}</span>
             <input
