@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { apiFetch } from '../storage/api'
 import { formatAdminLabel } from './MemberPrivacyNotice'
+import { ADMIN_DISPLAY_NAME } from '../users/admin'
 
 interface PublicAccount {
   id: string
@@ -22,8 +23,7 @@ export function LoginScreen({ onLoggedIn }: { onLoggedIn: () => Promise<void> })
   }, [])
 
   const selected = accounts.find((a) => a.id === accountId)
-  const adminAccount = accounts.find((a) => a.role === 'admin')
-  const adminLabel = adminAccount ? formatAdminLabel(adminAccount.displayName) : 'Admin'
+  const adminLabel = formatAdminLabel(ADMIN_DISPLAY_NAME)
 
   async function submit(event: FormEvent) {
     event.preventDefault()

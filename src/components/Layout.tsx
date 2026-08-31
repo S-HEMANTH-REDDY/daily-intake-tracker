@@ -4,6 +4,7 @@ import { UserSelector } from './UserSelector'
 import { Disclaimer } from './Disclaimer'
 import { MemberPrivacyNotice } from './MemberPrivacyNotice'
 import { useAppStore } from '../storage/context'
+import { ADMIN_DISPLAY_NAME } from '../users/admin'
 
 const NAV = [
   { to: '/', label: 'Today', icon: LayoutDashboard, end: true },
@@ -14,9 +15,8 @@ const NAV = [
 ]
 
 export function Layout() {
-  const { error, busy, sessionRole, activeUser, sessionUserId, state } = useAppStore()
+  const { error, busy, sessionRole, activeUser, sessionUserId } = useAppStore()
   const viewingOther = sessionRole === 'admin' && activeUser.id !== sessionUserId
-  const adminName = state.users.find((u) => u.role === 'admin')?.displayName ?? 'Admin'
   const isMember = sessionRole === 'member'
 
   return (
@@ -35,7 +35,7 @@ export function Layout() {
           ’s logs. Logged times are shown on Today and Log. Anything you add or reset applies to her.
         </p>
       ) : null}
-      {isMember ? <MemberPrivacyNotice adminName={adminName} /> : null}
+      {isMember ? <MemberPrivacyNotice adminName={ADMIN_DISPLAY_NAME} /> : null}
       {error ? (
         <p className="mb-4 rounded-2xl bg-coral-soft px-4 py-2 text-sm text-coral">{error}</p>
       ) : null}

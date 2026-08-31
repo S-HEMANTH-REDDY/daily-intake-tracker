@@ -16,7 +16,8 @@ export function MemberPrivacyNotice({
     <>
       This is a shared tracker. <span className="font-semibold">{adminLabel}</span> can view
       your food log (including when each item was logged), add or edit entries for you, reset today or
-      all logs, and update your profile. Only you can sign in with your PIN.
+      all logs, and update your profile. You can see when you logged each item on Today and Log. Only
+      you can sign in with your PIN.
     </>
   )
 

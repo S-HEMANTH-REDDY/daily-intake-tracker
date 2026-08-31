@@ -146,15 +146,15 @@ export function DashboardPage() {
       </div>
 
       <h2 className="font-display text-2xl">What {store.activeUser.displayName} ate</h2>
-      {adminViewingOther ? (
-        <p className="text-sm text-ink-soft">
-          Admin view — each item shows when it was logged (your local time).
-        </p>
-      ) : null}
+      <p className="text-sm text-ink-soft">
+        {adminViewingOther
+          ? 'Admin view — each item shows when it was logged (your local time).'
+          : 'Each item shows when it was logged (your local time).'}
+      </p>
       <FoodLog
         entries={entries}
         extraFoods={store.customFoods}
-        showTimestamps={adminViewingOther}
+        showTimestamps
         onQuantity={(id, quantity) => store.updateLog(id, { quantity })}
         onRemove={store.removeLog}
       />

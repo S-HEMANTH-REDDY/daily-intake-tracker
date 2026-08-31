@@ -4,6 +4,7 @@ import { useAppStore } from '../storage/context'
 import { buildNutrientTargets } from '../recommendations/personalize'
 import { calorieTarget } from '../calculations/energy'
 import { MemberPrivacyNotice, formatAdminLabel } from '../components/MemberPrivacyNotice'
+import { ADMIN_DISPLAY_NAME } from '../users/admin'
 
 const ACTIVITY_LABELS: Record<ActivityLevel, string> = {
   sedentary: 'Sedentary (little or no exercise)',
@@ -18,7 +19,6 @@ export function ProfilePage() {
   const targets = buildNutrientTargets(activeUser)
   const energy = calorieTarget(activeUser)
   const isAdmin = sessionRole === 'admin'
-  const adminName = state.users.find((u) => u.role === 'admin')?.displayName ?? 'Admin'
 
   return (
     <div className="space-y-6">
@@ -27,11 +27,11 @@ export function ProfilePage() {
         <p className="mt-1 text-ink-soft">
           {isAdmin
             ? 'Switch whose log you are viewing. Reset is admin-only and cannot be undone.'
-            : `Update your details here. Your food log is shared with ${formatAdminLabel(adminName)} (see below).`}
+            : `Update your details here. Your food log is shared with ${formatAdminLabel(ADMIN_DISPLAY_NAME)} (see below).`}
         </p>
       </div>
 
-      {!isAdmin ? <MemberPrivacyNotice adminName={adminName} variant="card" /> : null}
+      {!isAdmin ? <MemberPrivacyNotice adminName={ADMIN_DISPLAY_NAME} variant="card" /> : null}
 
       {isAdmin ? (
         <div className="flex flex-wrap gap-2">
