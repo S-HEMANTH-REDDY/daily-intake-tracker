@@ -98,7 +98,7 @@ export const EXTRA_DRINKS: Food[] = [
     sourceName: 'The Coca-Cola Company — Diet Coke Nutrition Facts',
     sourceUrl: 'https://www.coca-cola.com/us/en/brands/diet-coke/products',
     notes:
-      'Diet Coke is 0 kcal and 0 g sugar on the US label. Sweetness is from aspartame. Sodium is 40 mg per 12 fl oz (355 mL) and scales with volume. This still counts as a soda in the drink tracker.',
+      'Diet Coke is 0 kcal and 0 g sugar on the US label. Sweetness is from aspartame. Sodium is 40 mg per 12 fl oz (355 mL) and scales with volume. Logged for your record; not counted in the sugar-sweetened drink limit.',
     aliases: ['diet coke', 'diet cola', 'diet cocacola'],
   }),
   ...sodaFamily({
@@ -109,7 +109,7 @@ export const EXTRA_DRINKS: Food[] = [
     sourceName: 'The Coca-Cola Company — Coca-Cola Zero Sugar Nutrition Facts',
     sourceUrl: 'https://www.coca-cola.com/us/en/brands/coca-cola/products/zero',
     notes:
-      'Coke Zero Sugar is 0 kcal and 0 g sugar on the US label (aspartame + acesulfame K). Sodium is 40 mg per 12 fl oz (355 mL).',
+      'Coke Zero Sugar is 0 kcal and 0 g sugar on the US label (aspartame + acesulfame K). Sodium is 40 mg per 12 fl oz (355 mL). Logged for your record; not counted in the sugar-sweetened drink limit.',
     aliases: ['coke zero', 'zero coke', 'coca cola zero'],
   }),
   {

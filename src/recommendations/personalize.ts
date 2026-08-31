@@ -167,13 +167,13 @@ export function buildCategoryGuidelines(user: UserProfile): CategoryGuideline[] 
     },
     {
       category: 'sugary_drinks',
-      label: 'Sugary drinks',
+      label: 'Sugar-sweetened drinks',
       emoji: '🥤',
       unit: 'drinks',
       value: 1,
       kind: 'app_guideline',
       derivation:
-        'The Dietary Guidelines for Americans (2025–2030) recommend avoiding sugar-sweetened beverages such as sodas, fruit drinks, and energy drinks. A typical 12 fl oz cola contains about 39 g added sugar, which already exceeds the AHA daily upper limit for most women and most men. This app uses 1 drink as a practical tracking threshold — not a recommended intake.',
+        'The Dietary Guidelines for Americans (2025–2030) recommend avoiding sugar-sweetened beverages such as regular sodas, fruit drinks, and energy drinks. A typical 12 fl oz cola contains about 39 g added sugar, which already exceeds the AHA daily upper limit for most women and most men. Diet Coke, Coke Zero, and other 0 g sugar sodas still appear in your log but are not counted here.',
     },
     {
       category: 'fast_food',

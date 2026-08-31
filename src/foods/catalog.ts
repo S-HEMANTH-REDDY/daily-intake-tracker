@@ -1065,7 +1065,7 @@ export const CATEGORY_META: Record<
   cookies: { label: 'Cookies', emoji: '🍪', blurb: 'Chain, packaged, and bakery cookies' },
   chocolate_candy: { label: 'Chocolate & candy', emoji: '🍫', blurb: "Hershey's, bars, gummies, chocolate" },
   fast_food: { label: 'Fast food', emoji: '🍟', blurb: 'Burgers, fries, nuggets, pizza' },
-  sugary_drinks: { label: 'Soda & drinks', emoji: '🥤', blurb: 'Coke, Diet Coke, and other sodas by mL' },
+  sugary_drinks: { label: 'Soda & drinks', emoji: '🥤', blurb: 'Regular soda counts toward the drink limit; Diet/Zero do not' },
   desserts: { label: 'Desserts', emoji: '🍦', blurb: 'Ice cream, cake, donuts, pastries' },
   snacks: { label: 'Snacks', emoji: '🍿', blurb: 'Chips, crackers, popcorn' },
   other: { label: 'Other', emoji: '🍽️', blurb: 'Custom and uncategorized foods' },
