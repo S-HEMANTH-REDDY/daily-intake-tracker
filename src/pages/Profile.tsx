@@ -3,7 +3,7 @@ import { ACTIVITY_LEVELS, SEX_OPTIONS, type ActivityLevel, type Sex } from '../u
 import { useAppStore } from '../storage/context'
 import { buildNutrientTargets } from '../recommendations/personalize'
 import { calorieTarget } from '../calculations/energy'
-import { MemberPrivacyNotice } from '../components/MemberPrivacyNotice'
+import { MemberPrivacyNotice, formatAdminLabel } from '../components/MemberPrivacyNotice'
 
 const ACTIVITY_LABELS: Record<ActivityLevel, string> = {
   sedentary: 'Sedentary (little or no exercise)',
@@ -27,7 +27,7 @@ export function ProfilePage() {
         <p className="mt-1 text-ink-soft">
           {isAdmin
             ? 'Switch whose log you are viewing. Reset is admin-only and cannot be undone.'
-            : 'Update your details here. Your food log is shared with the admin account (see below).'}
+            : `Update your details here. Your food log is shared with ${formatAdminLabel(adminName)} (see below).`}
         </p>
       </div>
 

@@ -1,5 +1,9 @@
 import { Shield } from 'lucide-react'
 
+export function formatAdminLabel(displayName: string): string {
+  return `${displayName} (Admin)`
+}
+
 export function MemberPrivacyNotice({
   adminName,
   variant = 'banner',
@@ -7,9 +11,10 @@ export function MemberPrivacyNotice({
   adminName: string
   variant?: 'banner' | 'card'
 }) {
+  const adminLabel = formatAdminLabel(adminName)
   const body = (
     <>
-      This is a shared tracker. <span className="font-semibold">{adminName} (admin)</span> can view
+      This is a shared tracker. <span className="font-semibold">{adminLabel}</span> can view
       your food log (including when each item was logged), add or edit entries for you, reset today or
       all logs, and update your profile. Only you can sign in with your PIN.
     </>
@@ -21,7 +26,7 @@ export function MemberPrivacyNotice({
         <div className="flex gap-3">
           <Shield size={22} className="mt-0.5 shrink-0 text-sage" aria-hidden />
           <div>
-            <h2 className="font-display text-xl">Shared with admin</h2>
+            <h2 className="font-display text-xl">Shared with {adminLabel}</h2>
             <p className="mt-2 text-sm leading-relaxed text-ink-soft">{body}</p>
           </div>
         </div>
