@@ -1,23 +1,8 @@
 import type { Food } from './types'
-import type { NutrientProfile } from '../nutrition/types'
-
-function n(
-  partial: Partial<NutrientProfile> & Pick<NutrientProfile, 'calories'>,
-): NutrientProfile {
-  return {
-    calories: partial.calories,
-    totalFatG: partial.totalFatG ?? 0,
-    saturatedFatG: partial.saturatedFatG ?? 0,
-    transFatG: partial.transFatG ?? 0,
-    cholesterolMg: partial.cholesterolMg ?? 0,
-    sodiumMg: partial.sodiumMg ?? 0,
-    carbsG: partial.carbsG ?? 0,
-    fiberG: partial.fiberG ?? 0,
-    totalSugarG: partial.totalSugarG ?? 0,
-    addedSugarG: partial.addedSugarG ?? partial.totalSugarG ?? 0,
-    proteinG: partial.proteinG ?? 0,
-  }
-}
+import { EXTRA_CHOCOLATE } from './catalog-chocolate'
+import { EXTRA_COOKIES } from './catalog-cookies'
+import { EXTRA_DRINKS } from './catalog-drinks'
+import { n } from './nutrients'
 
 export const FOOD_CATALOG: Food[] = [
   {
@@ -560,7 +545,7 @@ export const FOOD_CATALOG: Food[] = [
     name: 'Coca-Cola Classic',
     brand: 'Coca-Cola',
     category: 'sugary_drinks',
-    servingLabel: '12 fl oz can',
+    servingLabel: '12 fl oz can (355 mL)',
     increment: 0.5,
     nutrition: n({
       calories: 140,
@@ -573,14 +558,14 @@ export const FOOD_CATALOG: Food[] = [
       name: 'The Coca-Cola Company — 12 fl oz Coca-Cola Nutrition Facts',
       url: 'https://www.coca-cola.com/us/en/offerings/coca-cola',
     },
-    aliases: ['coke', 'cola', 'soda'],
+    aliases: ['coke', 'cola', 'soda', 'coca cola', 'cocacola', 'cocoola'],
   },
   {
     id: 'pepsi-12',
     name: 'Pepsi',
     brand: 'PepsiCo',
     category: 'sugary_drinks',
-    servingLabel: '12 fl oz can',
+    servingLabel: '12 fl oz can (355 mL)',
     increment: 0.5,
     nutrition: n({
       calories: 150,
@@ -599,7 +584,7 @@ export const FOOD_CATALOG: Food[] = [
     name: 'Sprite',
     brand: 'Coca-Cola',
     category: 'sugary_drinks',
-    servingLabel: '12 fl oz can',
+    servingLabel: '12 fl oz can (355 mL)',
     increment: 0.5,
     nutrition: n({
       calories: 140,
@@ -618,7 +603,7 @@ export const FOOD_CATALOG: Food[] = [
     name: 'Mountain Dew',
     brand: 'PepsiCo',
     category: 'sugary_drinks',
-    servingLabel: '12 fl oz can',
+    servingLabel: '12 fl oz can (355 mL)',
     increment: 0.5,
     nutrition: n({
       calories: 170,
@@ -1068,16 +1053,19 @@ export const FOOD_CATALOG: Food[] = [
       url: 'https://www.pringles.com/',
     },
   },
+  ...EXTRA_DRINKS,
+  ...EXTRA_COOKIES,
+  ...EXTRA_CHOCOLATE,
 ]
 
 export const CATEGORY_META: Record<
   Food['category'],
   { label: string; emoji: string; blurb: string }
 > = {
-  cookies: { label: 'Cookies', emoji: '🍪', blurb: 'Cookies, sandwich cookies, bakery cookies' },
-  chocolate_candy: { label: 'Chocolate & candy', emoji: '🍫', blurb: 'Bars, gummies, chocolate' },
+  cookies: { label: 'Cookies', emoji: '🍪', blurb: 'Chain, packaged, and bakery cookies' },
+  chocolate_candy: { label: 'Chocolate & candy', emoji: '🍫', blurb: "Hershey's, bars, gummies, chocolate" },
   fast_food: { label: 'Fast food', emoji: '🍟', blurb: 'Burgers, fries, nuggets, pizza' },
-  sugary_drinks: { label: 'Sugary drinks', emoji: '🥤', blurb: 'Soda, sweet tea, energy drinks' },
+  sugary_drinks: { label: 'Soda & drinks', emoji: '🥤', blurb: 'Coke, Diet Coke, and other sodas by mL' },
   desserts: { label: 'Desserts', emoji: '🍦', blurb: 'Ice cream, cake, donuts, pastries' },
   snacks: { label: 'Snacks', emoji: '🍿', blurb: 'Chips, crackers, popcorn' },
   other: { label: 'Other', emoji: '🍽️', blurb: 'Custom and uncategorized foods' },

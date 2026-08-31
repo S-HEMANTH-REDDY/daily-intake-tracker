@@ -18,12 +18,14 @@ function scoreFood(food: Food, q: string): number {
   const name = food.name.toLowerCase()
   const brand = food.brand?.toLowerCase() ?? ''
   const aliases = (food.aliases ?? []).map((a) => a.toLowerCase())
+  const serving = food.servingLabel.toLowerCase()
   if (name === q || aliases.includes(q)) return 100
   if (name.startsWith(q)) return 80
   if (aliases.some((a) => a.startsWith(q))) return 70
   if (name.includes(q)) return 50
   if (brand.includes(q)) return 40
   if (aliases.some((a) => a.includes(q))) return 35
+  if (serving.includes(q)) return 28
   return 0
 }
 
