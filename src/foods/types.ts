@@ -31,4 +31,6 @@ export interface Food {
   isCustom?: boolean
   ownerUserId?: string
   aliases?: string[]
+  /** Show ⅛–1 portion picker (milkshakes, shared desserts, etc.). */
+  fractionalPortions?: boolean
 }

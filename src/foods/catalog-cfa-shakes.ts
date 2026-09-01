@@ -17,12 +17,13 @@ function cfaMilkshake(input: {
     brand: 'Chick-fil-A',
     category: 'desserts',
     servingLabel: '1 milkshake (hand-spun)',
-    increment: 1,
+    increment: 0.125,
+    fractionalPortions: true,
     nutrition: { ...input.nutrition, totalSugarG: input.sugarsG, addedSugarG: input.sugarsG },
     source: {
       name: `Chick-fil-A ${input.flavor} Milkshake nutrition`,
       url: `https://www.chick-fil-a.com/menu/treats/${input.path}`,
-      notes: `Official US menu nutrition (whipped cream + cherry). Same at UF-area Chick-fil-A outlets. Sugars ${input.sugarsG} g; added sugar is not listed separately and is estimated from total sugars.${input.seasonal ? ' Seasonal item — may not be available year-round.' : ''}`,
+      notes: `Official US menu nutrition (whipped cream + cherry). Same at UF-area Chick-fil-A outlets. Log ⅛, ¼, ½, ¾, or a full shake. Sugars ${input.sugarsG} g per full shake; added sugar is not listed separately and is estimated from total sugars.${input.seasonal ? ' Seasonal item — may not be available year-round.' : ''}`,
     },
     aliases: [
       `cfa ${input.flavor.toLowerCase()} shake`,

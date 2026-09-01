@@ -3,8 +3,10 @@ import { getFood } from '../foods/lookup'
 import type { Food } from '../foods/types'
 import { scaleNutrition } from '../nutrition/scale'
 import { formatLogTime, logWasUpdated, roundDisplay } from '../calculations/dates'
+import { quantityServingLabel, supportsFractionalPortions } from '../foods/portions'
 import type { LogEntry } from '../storage/schema'
 import { IntakeCounter } from './IntakeCounter'
+import { PortionPicker } from './PortionPicker'
 
 function LogTimestamp({ entry }: { entry: LogEntry }) {
   const loggedAt = formatLogTime(entry.createdAt)
@@ -65,29 +67,37 @@ export function FoodLog({
           return (
             <li
               key={entry.id}
-              className="flex flex-col gap-3 border-b border-line px-5 py-4 last:border-b-0 sm:grid sm:grid-cols-[1fr_auto_auto] sm:items-center"
+              className="flex flex-col gap-3 border-b border-line px-5 py-4 last:border-b-0"
             >
-              <div>
-                <p className="font-semibold">{food.name}</p>
-                <p className="text-sm text-ink-soft">
-                  {roundDisplay(entry.quantity, 1)} × {food.servingLabel} · {roundDisplay(n.calories, 0)}{' '}
-                  kcal · {roundDisplay(n.addedSugarG, 1)} g added sugar
-                </p>
-                {showTimestamps ? <LogTimestamp entry={entry} /> : null}
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold">{food.name}</p>
+                  <p className="text-sm text-ink-soft">
+                    {quantityServingLabel(entry.quantity, food.servingLabel)} · {roundDisplay(n.calories, 0)}{' '}
+                    kcal · {roundDisplay(n.addedSugarG, 1)} g added sugar
+                  </p>
+                  {showTimestamps ? <LogTimestamp entry={entry} /> : null}
+                </div>
+                <button
+                  type="button"
+                  aria-label={`Remove ${food.name}`}
+                  className="shrink-0 rounded-full p-2 text-ink-soft hover:bg-coral-soft hover:text-coral"
+                  onClick={() => onRemove(entry.id)}
+                >
+                  <Trash2 size={18} />
+                </button>
               </div>
-              <IntakeCounter
-                value={entry.quantity}
-                increment={food.increment}
-                onChange={(q) => onQuantity(entry.id, q)}
-              />
-              <button
-                type="button"
-                aria-label={`Remove ${food.name}`}
-                className="self-end rounded-full p-2 text-ink-soft hover:bg-coral-soft hover:text-coral sm:self-center"
-                onClick={() => onRemove(entry.id)}
-              >
-                <Trash2 size={18} />
-              </button>
+              {supportsFractionalPortions(food) ? (
+                <PortionPicker value={entry.quantity} onChange={(q) => onQuantity(entry.id, q)} />
+              ) : (
+                <div className="flex justify-end">
+                  <IntakeCounter
+                    value={entry.quantity}
+                    increment={food.increment}
+                    onChange={(q) => onQuantity(entry.id, q)}
+                  />
+                </div>
+              )}
             </li>
           )
         })}

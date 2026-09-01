@@ -4,10 +4,12 @@ import { X } from 'lucide-react'
 import { FoodSearch } from '../components/FoodSearch'
 import { FoodLog } from '../components/FoodLog'
 import { IntakeCounter } from '../components/IntakeCounter'
+import { PortionPicker } from '../components/PortionPicker'
 import { todayKey, roundDisplay } from '../calculations/dates'
 import { scaleNutrition } from '../nutrition/scale'
 import type { Food } from '../foods/types'
 import { CATEGORY_META } from '../foods/catalog'
+import { defaultPortionQuantity, quantityServingLabel, supportsFractionalPortions } from '../foods/portions'
 import { useAppStore } from '../storage/context'
 import { useDayData } from '../daily-log/useDayData'
 
@@ -21,13 +23,13 @@ export function LogPage() {
 
   function choose(food: Food) {
     setSelected(food)
-    setQty(food.increment < 1 ? 1 : 1)
+    setQty(defaultPortionQuantity(food))
   }
 
   function add() {
     if (!selected) return
     void store.addLog({ foodId: selected.id, quantity: qty, date })
-    setJustAdded(`${roundDisplay(qty, 1)} × ${selected.name}`)
+    setJustAdded(quantityServingLabel(qty, selected.servingLabel))
     setSelected(null)
   }
 
@@ -91,7 +93,11 @@ export function LogPage() {
             </dl>
 
             <div className="mt-5 flex flex-col items-center gap-4">
-              <IntakeCounter value={qty} increment={selected.increment} min={selected.increment} onChange={setQty} />
+              {supportsFractionalPortions(selected) ? (
+                <PortionPicker value={qty} onChange={setQty} />
+              ) : (
+                <IntakeCounter value={qty} increment={selected.increment} min={selected.increment} onChange={setQty} />
+              )}
               <button
                 type="button"
                 onClick={add}
