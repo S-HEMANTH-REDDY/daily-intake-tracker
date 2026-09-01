@@ -102,7 +102,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const setActiveUser = useCallback(
     async (userId: string) => {
-      if (sessionRole !== 'admin') return
       await flushProfile()
       setBusy(true)
       setError(null)
@@ -111,7 +110,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           method: 'POST',
           body: JSON.stringify({ userId }),
         })
-        applyPayload(payload, 'admin')
+        applyPayload(payload, sessionRole)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Could not switch profile')
       } finally {

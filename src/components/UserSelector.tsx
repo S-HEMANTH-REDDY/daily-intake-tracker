@@ -1,12 +1,14 @@
+import { useLogPermissions } from '../hooks/useLogPermissions'
 import { useAppStore } from '../storage/context'
 
 export function UserSelector() {
-  const { state, activeUser, sessionRole, setActiveUser, logout, busy } = useAppStore()
-  const viewingOther = sessionRole === 'admin' && activeUser.id !== 'user-hemanth'
+  const { state, activeUser, setActiveUser, logout, busy } = useAppStore()
+  const { viewingOther, isAdminViewingMember, isMemberViewingAdmin } = useLogPermissions()
+  const canSwitch = state.users.length > 1
 
   return (
     <div className="flex items-center gap-2">
-      {sessionRole === 'admin' ? (
+      {canSwitch ? (
         <label className="flex items-center gap-2 text-sm">
           <span className="hidden text-ink-soft sm:inline">Viewing</span>
           <select
@@ -26,9 +28,19 @@ export function UserSelector() {
       ) : (
         <p className="rounded-full bg-card px-3 py-2 text-sm font-semibold">{activeUser.displayName}</p>
       )}
-      {viewingOther ? (
+      {isAdminViewingMember ? (
         <span className="hidden rounded-full bg-amber-soft px-2 py-1 text-[11px] font-semibold text-amber sm:inline">
           Her log
+        </span>
+      ) : null}
+      {isMemberViewingAdmin ? (
+        <span className="hidden rounded-full bg-sage-soft px-2 py-1 text-[11px] font-semibold text-sage sm:inline">
+          Read-only
+        </span>
+      ) : null}
+      {viewingOther && !isAdminViewingMember && !isMemberViewingAdmin ? (
+        <span className="hidden rounded-full bg-amber-soft px-2 py-1 text-[11px] font-semibold text-amber sm:inline">
+          Viewing
         </span>
       ) : null}
       <button

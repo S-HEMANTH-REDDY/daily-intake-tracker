@@ -9,6 +9,7 @@ import { NutrientCard } from '../components/NutrientCard'
 import { shiftDateKey, todayKey } from '../calculations/dates'
 import { statusForGoal, statusForLimit } from '../calculations/status'
 import { useDayData } from '../daily-log/useDayData'
+import { useLogPermissions } from '../hooks/useLogPermissions'
 import { useAdminViewingOther } from '../hooks/useAdminViewingOther'
 import { useAppStore } from '../storage/context'
 
@@ -25,6 +26,7 @@ function nutrientIntake(id: string, nutrients: NutrientProfile) {
 export function DashboardPage() {
   const store = useAppStore()
   const adminViewingOther = useAdminViewingOther()
+  const { readOnly } = useLogPermissions()
   const [date, setDate] = useState(todayKey)
   const { entries, totals, targets, guidelines } = useDayData(date)
   const isToday = date === todayKey()
@@ -113,9 +115,11 @@ export function DashboardPage() {
 
       <div className="flex items-end justify-between">
         <h2 className="font-display text-2xl">Today's water</h2>
-        <Link to="/log" className="text-sm font-semibold text-sage">
-          Log water
-        </Link>
+        {readOnly ? null : (
+          <Link to="/log" className="text-sm font-semibold text-sage">
+            Log water
+          </Link>
+        )}
       </div>
       <div className="grid gap-4 md:grid-cols-2">
         {waterRows.map((row) => (
@@ -135,9 +139,11 @@ export function DashboardPage() {
 
       <div className="flex items-end justify-between">
         <h2 className="font-display text-2xl">Today's junk food</h2>
-        <Link to="/log" className="text-sm font-semibold text-sage">
-          Log food
-        </Link>
+        {readOnly ? null : (
+          <Link to="/log" className="text-sm font-semibold text-sage">
+            Log food
+          </Link>
+        )}
       </div>
       <div className="grid gap-4 md:grid-cols-2">
         {junkRows.map((row) => (
@@ -173,14 +179,17 @@ export function DashboardPage() {
 
       <h2 className="font-display text-2xl">What {store.activeUser.displayName} ate</h2>
       <p className="text-sm text-ink-soft">
-        {adminViewingOther
-          ? 'Admin view — each item shows when it was logged (your local time).'
-          : 'Each item shows when it was logged (your local time).'}
+        {readOnly
+          ? 'Read-only — logged times shown in your local time.'
+          : adminViewingOther
+            ? 'Admin view — each item shows when it was logged (your local time).'
+            : 'Each item shows when it was logged (your local time).'}
       </p>
       <FoodLog
         entries={entries}
         extraFoods={store.customFoods}
         showTimestamps
+        readOnly={readOnly}
         onQuantity={(id, quantity) => store.updateLog(id, { quantity })}
         onRemove={store.removeLog}
       />

@@ -2,9 +2,10 @@ import { NavLink, Outlet } from 'react-router-dom'
 import { BookOpen, ClipboardList, History, LayoutDashboard, UserRound } from 'lucide-react'
 import { UserSelector } from './UserSelector'
 import { Disclaimer } from './Disclaimer'
-import { MemberPrivacyNotice } from './MemberPrivacyNotice'
+import { MemberPrivacyNotice, formatAdminLabel } from './MemberPrivacyNotice'
 import { useAppStore } from '../storage/context'
 import { ADMIN_DISPLAY_NAME } from '../users/admin'
+import { useLogPermissions } from '../hooks/useLogPermissions'
 
 const NAV = [
   { to: '/', label: 'Today', icon: LayoutDashboard, end: true },
@@ -15,8 +16,8 @@ const NAV = [
 ]
 
 export function Layout() {
-  const { error, busy, sessionRole, activeUser, sessionUserId } = useAppStore()
-  const viewingOther = sessionRole === 'admin' && activeUser.id !== sessionUserId
+  const { error, busy, sessionRole, activeUser } = useAppStore()
+  const { isAdminViewingMember, isMemberViewingAdmin } = useLogPermissions()
   const isMember = sessionRole === 'member'
 
   return (
@@ -29,13 +30,19 @@ export function Layout() {
         <UserSelector />
       </header>
 
-      {viewingOther ? (
+      {isAdminViewingMember ? (
         <p className="mb-4 rounded-2xl bg-amber-soft px-4 py-2 text-sm text-amber">
           Admin view: you are looking at <span className="font-semibold">{activeUser.displayName}</span>
           ’s logs. Logged times are shown on Today and Log. Anything you add or reset applies to her.
         </p>
       ) : null}
-      {isMember ? <MemberPrivacyNotice adminName={ADMIN_DISPLAY_NAME} /> : null}
+      {isMemberViewingAdmin ? (
+        <p className="mb-4 rounded-2xl bg-sage-soft px-4 py-2 text-sm text-ink">
+          Read-only view: you are looking at <span className="font-semibold">{formatAdminLabel(activeUser.displayName)}</span>
+          ’s logs. You can see everything — including when he logged each item — but you cannot add, edit, or delete his entries.
+        </p>
+      ) : null}
+      {isMember && !isMemberViewingAdmin ? <MemberPrivacyNotice adminName={ADMIN_DISPLAY_NAME} /> : null}
       {error ? (
         <p className="mb-4 rounded-2xl bg-coral-soft px-4 py-2 text-sm text-coral">{error}</p>
       ) : null}

@@ -31,12 +31,14 @@ export function FoodLog({
   onQuantity,
   onRemove,
   showTimestamps = false,
+  readOnly = false,
 }: {
   entries: LogEntry[]
   extraFoods: Food[]
   onQuantity: (id: string, quantity: number) => void
   onRemove: (id: string) => void
   showTimestamps?: boolean
+  readOnly?: boolean
 }) {
   if (entries.length === 0) {
     return (
@@ -78,16 +80,18 @@ export function FoodLog({
                   </p>
                   {showTimestamps ? <LogTimestamp entry={entry} /> : null}
                 </div>
-                <button
-                  type="button"
-                  aria-label={`Remove ${food.name}`}
-                  className="shrink-0 rounded-full p-2 text-ink-soft hover:bg-coral-soft hover:text-coral"
-                  onClick={() => onRemove(entry.id)}
-                >
-                  <Trash2 size={18} />
-                </button>
+                {readOnly ? null : (
+                  <button
+                    type="button"
+                    aria-label={`Remove ${food.name}`}
+                    className="shrink-0 rounded-full p-2 text-ink-soft hover:bg-coral-soft hover:text-coral"
+                    onClick={() => onRemove(entry.id)}
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                )}
               </div>
-              {supportsFractionalPortions(food) ? (
+              {readOnly ? null : supportsFractionalPortions(food) ? (
                 <PortionPicker value={entry.quantity} onChange={(q) => onQuantity(entry.id, q)} />
               ) : (
                 <div className="flex justify-end">

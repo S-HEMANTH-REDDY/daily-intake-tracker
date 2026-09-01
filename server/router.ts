@@ -39,7 +39,10 @@ function forbidden(): Response {
 
 async function statePayload(userId: string, sessionUserId: string, role: 'admin' | 'member') {
   const allUsers = await loadUsers()
-  const users = role === 'admin' ? allUsers : allUsers.filter((u) => u.id === sessionUserId)
+  const users =
+    role === 'admin'
+      ? allUsers
+      : allUsers.filter((u) => u.id === sessionUserId || u.role === 'admin')
   const logs = await loadLogs(userId)
   const customFoods = await loadCustomFoods(userId)
   return {
@@ -95,12 +98,25 @@ export async function handleApi(request: Request): Promise<Response> {
     }
 
     if (path === '/api/view' && method === 'POST') {
-      if (session.role !== 'admin') return forbidden()
       const body = (await request.json()) as { userId?: string }
       if (!body.userId || !getAccount(body.userId)) return json({ error: 'Unknown user' }, 400)
+      const target = getAccount(body.userId)!
+
+      if (session.role === 'admin') {
+        const token = await signSession({
+          userId: session.userId,
+          role: 'admin',
+          viewingUserId: body.userId,
+        })
+        const payload = await statePayload(body.userId, session.userId, session.role)
+        return json(payload, 200, { 'set-cookie': sessionCookie(token) })
+      }
+
+      if (body.userId !== session.userId && target.role !== 'admin') return forbidden()
+
       const token = await signSession({
         userId: session.userId,
-        role: 'admin',
+        role: 'member',
         viewingUserId: body.userId,
       })
       const payload = await statePayload(body.userId, session.userId, session.role)

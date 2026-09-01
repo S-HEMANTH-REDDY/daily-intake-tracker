@@ -103,5 +103,16 @@ export function publicAccounts() {
 export function targetUserId(session: Session, requested?: string | null): string {
   if (session.role === 'admin' && requested && getAccount(requested)) return requested
   if (session.role === 'admin') return session.viewingUserId || session.userId
+
+  if (requested && getAccount(requested)) {
+    const target = getAccount(requested)!
+    if (requested === session.userId || target.role === 'admin') return requested
+  }
+
+  const viewed = session.viewingUserId ? getAccount(session.viewingUserId) : undefined
+  if (viewed && (viewed.id === session.userId || viewed.role === 'admin')) {
+    return viewed.id
+  }
+
   return session.userId
 }

@@ -12,9 +12,11 @@ import { CATEGORY_META } from '../foods/catalog'
 import { defaultPortionQuantity, quantityServingLabel, supportsFractionalPortions } from '../foods/portions'
 import { useAppStore } from '../storage/context'
 import { useDayData } from '../daily-log/useDayData'
+import { useLogPermissions } from '../hooks/useLogPermissions'
 
 export function LogPage() {
   const store = useAppStore()
+  const { readOnly, isMemberViewingAdmin } = useLogPermissions()
   const date = todayKey()
   const { entries } = useDayData(date)
   const [selected, setSelected] = useState<Food | null>(null)
@@ -39,14 +41,18 @@ export function LogPage() {
     <div className="space-y-6">
       <div className="flex items-end justify-between gap-3">
         <div>
-          <h1 className="font-display text-3xl">Log food</h1>
+          <h1 className="font-display text-3xl">{readOnly ? `${store.activeUser.displayName}'s log` : 'Log food'}</h1>
           <p className="mt-1 text-ink-soft">
-            Search water bottles, Chick-fil-A milkshakes, Coke, Diet Coke, Subway cookies, Hershey’s, and more.
+            {readOnly
+              ? `Read-only view of ${store.activeUser.displayName}'s food log. Switch back to your name in the header to log your own food.`
+              : 'Search water bottles, Chick-fil-A milkshakes, Coke, Diet Coke, Subway cookies, Hershey’s, and more.'}
           </p>
         </div>
-        <Link to="/custom" className="rounded-full bg-sage px-4 py-2 text-sm font-semibold text-white">
-          Custom food
-        </Link>
+        {readOnly ? null : (
+          <Link to="/custom" className="rounded-full bg-sage px-4 py-2 text-sm font-semibold text-white">
+            Custom food
+          </Link>
+        )}
       </div>
 
       {justAdded ? (
@@ -55,14 +61,15 @@ export function LogPage() {
         </p>
       ) : null}
 
-      <FoodSearch extraFoods={store.customFoods} onSelect={choose} />
+      {readOnly ? null : <FoodSearch extraFoods={store.customFoods} onSelect={choose} />}
 
-      <h2 className="font-display text-2xl">Today's log</h2>
+      <h2 className="font-display text-2xl">{isMemberViewingAdmin ? `${store.activeUser.displayName}'s log today` : "Today's log"}</h2>
       <p className="text-sm text-ink-soft">Logged times shown — oldest first.</p>
       <FoodLog
         entries={entries}
         extraFoods={store.customFoods}
         showTimestamps
+        readOnly={readOnly}
         onQuantity={(id, quantity) => store.updateLog(id, { quantity })}
         onRemove={store.removeLog}
       />
