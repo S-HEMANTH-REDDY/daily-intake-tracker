@@ -22,11 +22,12 @@ export const EXTRA_WATER: Food[] = [
     category: 'water',
     servingLabel: '1 bottle (500 mL)',
     increment: 1,
+    fluidMl: 500,
     nutrition: zero,
     source: {
       name: 'Plain drinking water',
       notes:
-        '0 kcal. Log one serving each time you finish a 500 mL bottle. The Today dashboard tracks bottles toward your personal daily hydration goal (5 bottles for women, 6 for men at age 23).',
+        '0 kcal. Log one serving each time you finish a 500 mL bottle. The Water tab combines this with drinks like Diet Coke toward your daily mL goal.',
     },
     aliases: [
       'water',

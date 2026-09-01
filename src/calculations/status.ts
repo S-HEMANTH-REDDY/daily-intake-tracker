@@ -125,7 +125,7 @@ export function statusForGoal(intake: number, goal: number, unitLabel: string): 
 }
 
 function formatDelta(value: number, unitLabel: string): string {
-  const digits = unitLabel.includes('kcal') || unitLabel.includes('mg') || unitLabel.includes('cookie') || unitLabel.includes('serving') || unitLabel.includes('drink') || unitLabel.includes('bottle')
+  const digits = unitLabel.includes('kcal') || unitLabel.includes('mg') || unitLabel.includes('mL') || unitLabel.includes('cookie') || unitLabel.includes('serving') || unitLabel.includes('drink') || unitLabel.includes('bottle')
     ? 0
     : 1
   const n = Number(value.toFixed(digits))

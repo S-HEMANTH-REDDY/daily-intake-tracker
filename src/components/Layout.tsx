@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { BookOpen, ClipboardList, History, LayoutDashboard, UserRound } from 'lucide-react'
+import { BookOpen, ClipboardList, Droplets, History, LayoutDashboard, UserRound } from 'lucide-react'
 import { UserSelector } from './UserSelector'
 import { Disclaimer } from './Disclaimer'
 import { MemberPrivacyNotice, formatAdminLabel } from './MemberPrivacyNotice'
@@ -9,6 +9,7 @@ import { useLogPermissions } from '../hooks/useLogPermissions'
 
 const NAV = [
   { to: '/', label: 'Today', icon: LayoutDashboard, end: true },
+  { to: '/water', label: 'Water', icon: Droplets },
   { to: '/log', label: 'Log', icon: ClipboardList },
   { to: '/history', label: 'History', icon: History },
   { to: '/profile', label: 'You', icon: UserRound },
@@ -75,7 +76,7 @@ export function Layout() {
       </div>
 
       <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-parchment/95 px-2 py-2 backdrop-blur sm:hidden">
-        <div className="mx-auto grid max-w-lg grid-cols-5">
+        <div className="mx-auto grid max-w-lg grid-cols-6">
           {NAV.map((item) => (
             <NavLink
               key={item.to}

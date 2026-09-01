@@ -18,6 +18,7 @@ function cfaMilkshake(input: {
     category: 'desserts',
     servingLabel: '1 milkshake (hand-spun)',
     increment: 0.125,
+    fluidMl: 591,
     fractionalPortions: true,
     nutrition: { ...input.nutrition, totalSugarG: input.sugarsG, addedSugarG: input.sugarsG },
     source: {

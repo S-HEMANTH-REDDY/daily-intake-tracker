@@ -31,6 +31,8 @@ export interface Food {
   isCustom?: boolean
   ownerUserId?: string
   aliases?: string[]
+  /** Milliliters of fluid per serving toward daily hydration (water, soda, shakes, etc.). */
+  fluidMl?: number
   /** Show ⅛–1 portion picker (milkshakes, shared desserts, etc.). */
   fractionalPortions?: boolean
 }

@@ -4,13 +4,17 @@ import { useMemo, useState } from 'react'
 import { CategoryCard } from '../components/CategoryCard'
 import { DailySummary } from '../components/DailySummary'
 import { Disclaimer } from '../components/Disclaimer'
+import { FluidSummaryCard } from '../components/FluidSummaryCard'
 import { FoodLog } from '../components/FoodLog'
 import { NutrientCard } from '../components/NutrientCard'
 import { shiftDateKey, todayKey } from '../calculations/dates'
+import { computeDailyFluid } from '../calculations/fluid'
 import { statusForGoal, statusForLimit } from '../calculations/status'
+import { foodsById } from '../foods/lookup'
 import { useDayData } from '../daily-log/useDayData'
 import { useLogPermissions } from '../hooks/useLogPermissions'
 import { useAdminViewingOther } from '../hooks/useAdminViewingOther'
+import { waterGoalDerivation, waterGoalMl } from '../recommendations/personalize'
 import { useAppStore } from '../storage/context'
 
 function nutrientIntake(id: string, nutrients: NutrientProfile) {
@@ -33,7 +37,9 @@ export function DashboardPage() {
 
   const categoryRows = useMemo(
     () =>
-      guidelines.map((guideline) => {
+      guidelines
+        .filter((g) => g.category !== 'water')
+        .map((guideline) => {
         const intake = totals.categoryServings[guideline.category as keyof typeof totals.categoryServings] ?? 0
         const status =
           guideline.role === 'goal'
@@ -44,8 +50,11 @@ export function DashboardPage() {
     [guidelines, totals],
   )
 
-  const waterRows = categoryRows.filter((row) => row.guideline.category === 'water')
-  const junkRows = categoryRows.filter((row) => row.guideline.category !== 'water')
+  const foodMap = useMemo(() => foodsById(store.customFoods), [store.customFoods])
+  const fluidTotalMl = useMemo(
+    () => computeDailyFluid(entries, foodMap).totalMl,
+    [entries, foodMap],
+  )
 
   const nutrientRows = useMemo(
     () =>
@@ -69,7 +78,7 @@ export function DashboardPage() {
     Math.max(featuredNutrients.length, 1)
 
   const warnings = [
-    ...junkRows.filter((r) => r.status.tone === 'exceeded' || r.status.tone === 'approaching'),
+    ...categoryRows.filter((r) => r.status.tone === 'exceeded' || r.status.tone === 'approaching'),
     ...nutrientRows.filter(
       (r) =>
         r.target.role !== 'goal' &&
@@ -113,32 +122,14 @@ export function DashboardPage() {
         </section>
       )}
 
-      <div className="flex items-end justify-between">
-        <h2 className="font-display text-2xl">Today's water</h2>
-        {readOnly ? null : (
-          <Link to="/log" className="text-sm font-semibold text-sage">
-            Log water
-          </Link>
-        )}
-      </div>
-      <div className="grid gap-4 md:grid-cols-2">
-        {waterRows.map((row) => (
-          <CategoryCard
-            key={row.guideline.category}
-            emoji={row.guideline.emoji}
-            label={row.guideline.label}
-            intake={row.intake}
-            limit={row.guideline.value}
-            unit={row.guideline.unit}
-            status={row.status}
-            derivation={row.guideline.derivation}
-            mode="goal"
-          />
-        ))}
-      </div>
+      <FluidSummaryCard
+        totalMl={fluidTotalMl}
+        goalMl={waterGoalMl(store.activeUser)}
+        derivation={waterGoalDerivation(store.activeUser)}
+      />
 
       <div className="flex items-end justify-between">
-        <h2 className="font-display text-2xl">Today's junk food</h2>
+        <h2 className="font-display text-2xl">Today&apos;s junk food</h2>
         {readOnly ? null : (
           <Link to="/log" className="text-sm font-semibold text-sage">
             Log food
@@ -146,7 +137,7 @@ export function DashboardPage() {
         )}
       </div>
       <div className="grid gap-4 md:grid-cols-2">
-        {junkRows.map((row) => (
+        {categoryRows.map((row) => (
           <CategoryCard
             key={row.guideline.category}
             emoji={row.guideline.emoji}

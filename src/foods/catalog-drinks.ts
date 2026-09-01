@@ -34,6 +34,7 @@ function sodaFamily(input: {
     category: 'sugary_drinks' as const,
     servingLabel: size.label,
     increment: 1,
+    fluidMl: size.ml,
     nutrition: input.officialByMl?.[size.ml] ?? scaleNutrients(input.per355, size.ml / BASE_ML),
     source: {
       name: input.sourceName,

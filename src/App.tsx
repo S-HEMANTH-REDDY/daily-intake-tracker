@@ -3,6 +3,7 @@ import { lazy, Suspense } from 'react'
 import { Layout } from './components/Layout'
 import { DashboardPage } from './pages/Dashboard'
 import { LogPage } from './pages/Log'
+import { WaterPage } from './pages/Water'
 import { ProfilePage } from './pages/Profile'
 import { SourcesPage } from './pages/Sources'
 import { AppProvider } from './storage/AppProvider'
@@ -24,6 +25,7 @@ export default function App() {
           <Routes>
             <Route element={<Layout />}>
               <Route index element={<DashboardPage />} />
+              <Route path="water" element={<WaterPage />} />
               <Route path="log" element={<LogPage />} />
               <Route path="history" element={<HistoryPage />} />
               <Route path="profile" element={<ProfilePage />} />

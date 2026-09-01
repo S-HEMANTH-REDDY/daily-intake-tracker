@@ -146,17 +146,20 @@ export function waterBottleGoal(user: UserProfile): number {
   return 5
 }
 
+export function waterGoalMl(user: UserProfile): number {
+  return waterBottleGoal(user) * 500
+}
+
 export function waterGoalDerivation(user: UserProfile): string {
-  const bottles = waterBottleGoal(user)
-  const ml = bottles * 500
+  const ml = waterGoalMl(user)
   const liters = (ml / 1000).toFixed(1)
   const sexNote =
     user.sex === 'male'
       ? 'Institute of Medicine adequate intake for men ages 19–30 is ~3.7 L total water/day (~3.0 L from drinks).'
       : user.sex === 'female'
         ? 'Institute of Medicine adequate intake for women ages 19–30 is ~2.7 L total water/day (~2.1–2.2 L from drinks).'
-        : 'Set sex in your profile for a personal goal (5 bottles for women, 6 for men at age 23). Using 5 bottles until then.'
-  return `Log each 500 mL bottle you finish. Goal is ${bottles} bottles (${ml} mL ≈ ${liters} L from drinks). ${sexNote} Needs rise with heat, exercise, and sweating (e.g. Florida). This is an app hydration goal, not a medical prescription.`
+        : 'Set sex in your profile for a personal goal (2,500 mL for women, 3,000 mL for men at age 23). Using 2,500 mL until then.'
+  return `Counts plain water bottles plus fluid from logged drinks (Diet Coke, Coke, milkshakes, etc.) — each drink’s mL is added automatically. Goal is ${ml.toLocaleString()} mL (≈ ${liters} L from drinks). ${sexNote} Needs rise with heat, exercise, and sweating (e.g. Florida). This is an app hydration goal, not a medical prescription.`
 }
 
 export function buildCategoryGuidelines(user: UserProfile): CategoryGuideline[] {
@@ -165,19 +168,8 @@ export function buildCategoryGuidelines(user: UserProfile): CategoryGuideline[] 
   const cookies = Math.max(1, Math.round(sugarLimit / TYPICAL_ADDED_SUGAR_G.cookies))
   const candy = Math.max(1, Math.round(sugarLimit / TYPICAL_ADDED_SUGAR_G.chocolate_candy))
   const desserts = Math.max(1, Math.round(sugarLimit / TYPICAL_ADDED_SUGAR_G.desserts))
-  const waterBottles = waterBottleGoal(user)
 
   return [
-    {
-      category: 'water',
-      label: 'Water',
-      emoji: '💧',
-      unit: 'bottles',
-      value: waterBottles,
-      role: 'goal',
-      kind: 'app_guideline',
-      derivation: waterGoalDerivation(user),
-    },
     {
       category: 'cookies',
       label: 'Cookies',
