@@ -45,7 +45,7 @@ export function LogPage() {
           <p className="mt-1 text-ink-soft">
             {readOnly
               ? `Read-only view of ${store.activeUser.displayName}'s food log. Switch back to your name in the header to log your own food.`
-              : 'Search water bottles, Chick-fil-A milkshakes, Coke, Diet Coke, Subway cookies, Hershey’s, and more.'}
+              : 'Search Häagen-Dazs, Cold Stone, Ben & Jerry\'s, Chick-fil-A shakes, water, Coke, and more.'}
           </p>
         </div>
         {readOnly ? null : (

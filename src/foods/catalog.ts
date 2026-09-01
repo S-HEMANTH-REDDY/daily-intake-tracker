@@ -3,6 +3,7 @@ import { EXTRA_CFA_SHAKES } from './catalog-cfa-shakes'
 import { EXTRA_CHOCOLATE } from './catalog-chocolate'
 import { EXTRA_COOKIES } from './catalog-cookies'
 import { EXTRA_DRINKS } from './catalog-drinks'
+import { EXTRA_ICE_CREAM } from './catalog-ice-cream'
 import { EXTRA_WATER } from './catalog-water'
 import { n } from './nutrients'
 
@@ -1119,6 +1120,7 @@ export const FOOD_CATALOG: Food[] = [
   },
   ...EXTRA_WATER,
   ...EXTRA_CFA_SHAKES,
+  ...EXTRA_ICE_CREAM,
   ...EXTRA_DRINKS,
   ...EXTRA_COOKIES,
   ...EXTRA_CHOCOLATE,
@@ -1133,7 +1135,7 @@ export const CATEGORY_META: Record<
   chocolate_candy: { label: 'Chocolate & candy', emoji: '🍫', blurb: "Hershey's, bars, gummies, chocolate" },
   fast_food: { label: 'Fast food', emoji: '🍟', blurb: 'Burgers, fries, nuggets, pizza' },
   sugary_drinks: { label: 'Soda & drinks', emoji: '🥤', blurb: 'Regular soda counts toward the drink limit; Diet/Zero do not' },
-  desserts: { label: 'Desserts', emoji: '🍦', blurb: 'Chick-fil-A milkshakes, ice cream, cake, donuts' },
+  desserts: { label: 'Desserts', emoji: '🍦', blurb: 'Häagen-Dazs, Ben & Jerry\'s, Cold Stone, bars, shakes, cake' },
   snacks: { label: 'Snacks', emoji: '🍿', blurb: 'Chips, crackers, popcorn' },
   other: { label: 'Other', emoji: '🍽️', blurb: 'Custom and uncategorized foods' },
 }
