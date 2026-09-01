@@ -140,8 +140,24 @@ const TYPICAL_ADDED_SUGAR_G: Record<FoodCategory, number> = {
   other: 10,
 }
 
-/** 500 mL bottles per day — 4 bottles = 2 L (about eight 8-oz glasses). */
-export const WATER_BOTTLE_GOAL = 4
+/** 500 mL bottles per day from beverages — based on IOM adequate intake (ages 19–30). */
+export function waterBottleGoal(user: UserProfile): number {
+  if (user.sex === 'male') return 6
+  return 5
+}
+
+export function waterGoalDerivation(user: UserProfile): string {
+  const bottles = waterBottleGoal(user)
+  const ml = bottles * 500
+  const liters = (ml / 1000).toFixed(1)
+  const sexNote =
+    user.sex === 'male'
+      ? 'Institute of Medicine adequate intake for men ages 19–30 is ~3.7 L total water/day (~3.0 L from drinks).'
+      : user.sex === 'female'
+        ? 'Institute of Medicine adequate intake for women ages 19–30 is ~2.7 L total water/day (~2.1–2.2 L from drinks).'
+        : 'Set sex in your profile for a personal goal (5 bottles for women, 6 for men at age 23). Using 5 bottles until then.'
+  return `Log each 500 mL bottle you finish. Goal is ${bottles} bottles (${ml} mL ≈ ${liters} L from drinks). ${sexNote} Needs rise with heat, exercise, and sweating (e.g. Florida). This is an app hydration goal, not a medical prescription.`
+}
 
 export function buildCategoryGuidelines(user: UserProfile): CategoryGuideline[] {
   const sugarLimit = ahaAddedSugarLimitG(user)
@@ -149,6 +165,7 @@ export function buildCategoryGuidelines(user: UserProfile): CategoryGuideline[] 
   const cookies = Math.max(1, Math.round(sugarLimit / TYPICAL_ADDED_SUGAR_G.cookies))
   const candy = Math.max(1, Math.round(sugarLimit / TYPICAL_ADDED_SUGAR_G.chocolate_candy))
   const desserts = Math.max(1, Math.round(sugarLimit / TYPICAL_ADDED_SUGAR_G.desserts))
+  const waterBottles = waterBottleGoal(user)
 
   return [
     {
@@ -156,10 +173,10 @@ export function buildCategoryGuidelines(user: UserProfile): CategoryGuideline[] 
       label: 'Water',
       emoji: '💧',
       unit: 'bottles',
-      value: WATER_BOTTLE_GOAL,
+      value: waterBottles,
       role: 'goal',
       kind: 'app_guideline',
-      derivation: `Log each 500 mL bottle you finish. Goal is ${WATER_BOTTLE_GOAL} bottles (${WATER_BOTTLE_GOAL * 500} mL ≈ 2 L) per day — about eight 8-oz glasses. Dietary Guidelines recommend water as your main drink; this is an app hydration goal, not a medical prescription.`,
+      derivation: waterGoalDerivation(user),
     },
     {
       category: 'cookies',

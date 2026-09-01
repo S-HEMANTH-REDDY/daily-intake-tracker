@@ -26,7 +26,7 @@ export const EXTRA_WATER: Food[] = [
     source: {
       name: 'Plain drinking water',
       notes:
-        '0 kcal. Log one serving each time you finish a 500 mL bottle. The Today dashboard tracks bottles toward a 4-bottle (2 L) daily hydration goal.',
+        '0 kcal. Log one serving each time you finish a 500 mL bottle. The Today dashboard tracks bottles toward your personal daily hydration goal (5 bottles for women, 6 for men at age 23).',
     },
     aliases: [
       'water',
