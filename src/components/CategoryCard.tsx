@@ -11,6 +11,7 @@ export function CategoryCard({
   unit,
   status,
   derivation,
+  mode = 'limit',
 }: {
   emoji: string
   label: string
@@ -19,7 +20,11 @@ export function CategoryCard({
   unit: string
   status: StatusResult
   derivation?: string
+  mode?: 'limit' | 'goal'
 }) {
+  const verb = mode === 'goal' ? 'logged' : 'eaten'
+  const targetLabel = mode === 'goal' ? 'goal' : 'guideline'
+
   return (
     <article className="card-shadow rounded-3xl bg-card p-5">
       <div className="flex items-start justify-between gap-3">
@@ -36,7 +41,7 @@ export function CategoryCard({
             {roundDisplay(limit, 0)}
           </p>
           <p className="mt-2 text-sm text-ink-soft">
-            {roundDisplay(intake, 1)} eaten · {roundDisplay(limit, 0)} {pluralUnit(unit, limit)} guideline
+            {roundDisplay(intake, 1)} {verb} · {roundDisplay(limit, 0)} {pluralUnit(unit, limit)} {targetLabel}
           </p>
         </div>
         <WarningBadge tone={status.tone} />

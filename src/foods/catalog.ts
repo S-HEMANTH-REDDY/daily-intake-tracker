@@ -1,7 +1,9 @@
 import type { Food } from './types'
+import { EXTRA_CFA_SHAKES } from './catalog-cfa-shakes'
 import { EXTRA_CHOCOLATE } from './catalog-chocolate'
 import { EXTRA_COOKIES } from './catalog-cookies'
 import { EXTRA_DRINKS } from './catalog-drinks'
+import { EXTRA_WATER } from './catalog-water'
 import { n } from './nutrients'
 
 export const FOOD_CATALOG: Food[] = [
@@ -1115,6 +1117,8 @@ export const FOOD_CATALOG: Food[] = [
       url: 'https://www.pringles.com/',
     },
   },
+  ...EXTRA_WATER,
+  ...EXTRA_CFA_SHAKES,
   ...EXTRA_DRINKS,
   ...EXTRA_COOKIES,
   ...EXTRA_CHOCOLATE,
@@ -1124,11 +1128,12 @@ export const CATEGORY_META: Record<
   Food['category'],
   { label: string; emoji: string; blurb: string }
 > = {
+  water: { label: 'Water', emoji: '💧', blurb: '500 mL bottles — counts toward daily hydration goal' },
   cookies: { label: 'Cookies', emoji: '🍪', blurb: 'Chain, packaged, and bakery cookies' },
   chocolate_candy: { label: 'Chocolate & candy', emoji: '🍫', blurb: "Hershey's, bars, gummies, chocolate" },
   fast_food: { label: 'Fast food', emoji: '🍟', blurb: 'Burgers, fries, nuggets, pizza' },
   sugary_drinks: { label: 'Soda & drinks', emoji: '🥤', blurb: 'Regular soda counts toward the drink limit; Diet/Zero do not' },
-  desserts: { label: 'Desserts', emoji: '🍦', blurb: 'Ice cream, cake, donuts, pastries' },
+  desserts: { label: 'Desserts', emoji: '🍦', blurb: 'Chick-fil-A milkshakes, ice cream, cake, donuts' },
   snacks: { label: 'Snacks', emoji: '🍿', blurb: 'Chips, crackers, popcorn' },
   other: { label: 'Other', emoji: '🍽️', blurb: 'Custom and uncategorized foods' },
 }

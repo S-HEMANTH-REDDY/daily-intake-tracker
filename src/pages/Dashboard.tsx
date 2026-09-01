@@ -33,14 +33,17 @@ export function DashboardPage() {
     () =>
       guidelines.map((guideline) => {
         const intake = totals.categoryServings[guideline.category as keyof typeof totals.categoryServings] ?? 0
-        return {
-          guideline,
-          intake,
-          status: statusForLimit(intake, guideline.value, guideline.unit, guideline.label),
-        }
+        const status =
+          guideline.role === 'goal'
+            ? statusForGoal(intake, guideline.value, guideline.unit)
+            : statusForLimit(intake, guideline.value, guideline.unit, guideline.label)
+        return { guideline, intake, status }
       }),
     [guidelines, totals],
   )
+
+  const waterRows = categoryRows.filter((row) => row.guideline.category === 'water')
+  const junkRows = categoryRows.filter((row) => row.guideline.category !== 'water')
 
   const nutrientRows = useMemo(
     () =>
@@ -64,7 +67,7 @@ export function DashboardPage() {
     Math.max(featuredNutrients.length, 1)
 
   const warnings = [
-    ...categoryRows.filter((r) => r.status.tone === 'exceeded' || r.status.tone === 'approaching'),
+    ...junkRows.filter((r) => r.status.tone === 'exceeded' || r.status.tone === 'approaching'),
     ...nutrientRows.filter(
       (r) =>
         r.target.role !== 'goal' &&
@@ -109,13 +112,13 @@ export function DashboardPage() {
       )}
 
       <div className="flex items-end justify-between">
-        <h2 className="font-display text-2xl">Today's junk food</h2>
+        <h2 className="font-display text-2xl">Today's water</h2>
         <Link to="/log" className="text-sm font-semibold text-sage">
-          Log food
+          Log water
         </Link>
       </div>
       <div className="grid gap-4 md:grid-cols-2">
-        {categoryRows.map((row) => (
+        {waterRows.map((row) => (
           <CategoryCard
             key={row.guideline.category}
             emoji={row.guideline.emoji}
@@ -125,6 +128,29 @@ export function DashboardPage() {
             unit={row.guideline.unit}
             status={row.status}
             derivation={row.guideline.derivation}
+            mode="goal"
+          />
+        ))}
+      </div>
+
+      <div className="flex items-end justify-between">
+        <h2 className="font-display text-2xl">Today's junk food</h2>
+        <Link to="/log" className="text-sm font-semibold text-sage">
+          Log food
+        </Link>
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        {junkRows.map((row) => (
+          <CategoryCard
+            key={row.guideline.category}
+            emoji={row.guideline.emoji}
+            label={row.guideline.label}
+            intake={row.intake}
+            limit={row.guideline.value}
+            unit={row.guideline.unit}
+            status={row.status}
+            derivation={row.guideline.derivation}
+            mode={row.guideline.role === 'goal' ? 'goal' : 'limit'}
           />
         ))}
       </div>

@@ -39,7 +39,7 @@ export function LogPage() {
         <div>
           <h1 className="font-display text-3xl">Log food</h1>
           <p className="mt-1 text-ink-soft">
-            Search Coke, Diet Coke, Subway cookies, Hershey’s, and more. Drink sizes are listed in mL.
+            Search water bottles, Chick-fil-A milkshakes, Coke, Diet Coke, Subway cookies, Hershey’s, and more.
           </p>
         </div>
         <Link to="/custom" className="rounded-full bg-sage px-4 py-2 text-sm font-semibold text-white">

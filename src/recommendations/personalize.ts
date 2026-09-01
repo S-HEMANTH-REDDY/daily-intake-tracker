@@ -130,6 +130,7 @@ function fiberGoal(user: UserProfile, kcal: number): number {
  * thresholds. These are not official serving recommendations.
  */
 const TYPICAL_ADDED_SUGAR_G: Record<FoodCategory, number> = {
+  water: 0,
   cookies: 5,
   chocolate_candy: 8,
   fast_food: 12,
@@ -139,6 +140,9 @@ const TYPICAL_ADDED_SUGAR_G: Record<FoodCategory, number> = {
   other: 10,
 }
 
+/** 500 mL bottles per day — 4 bottles = 2 L (about eight 8-oz glasses). */
+export const WATER_BOTTLE_GOAL = 4
+
 export function buildCategoryGuidelines(user: UserProfile): CategoryGuideline[] {
   const sugarLimit = ahaAddedSugarLimitG(user)
 
@@ -147,6 +151,16 @@ export function buildCategoryGuidelines(user: UserProfile): CategoryGuideline[] 
   const desserts = Math.max(1, Math.round(sugarLimit / TYPICAL_ADDED_SUGAR_G.desserts))
 
   return [
+    {
+      category: 'water',
+      label: 'Water',
+      emoji: '💧',
+      unit: 'bottles',
+      value: WATER_BOTTLE_GOAL,
+      role: 'goal',
+      kind: 'app_guideline',
+      derivation: `Log each 500 mL bottle you finish. Goal is ${WATER_BOTTLE_GOAL} bottles (${WATER_BOTTLE_GOAL * 500} mL ≈ 2 L) per day — about eight 8-oz glasses. Dietary Guidelines recommend water as your main drink; this is an app hydration goal, not a medical prescription.`,
+    },
     {
       category: 'cookies',
       label: 'Cookies',

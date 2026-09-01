@@ -1,6 +1,6 @@
 import type { LogEntry } from '../storage/schema'
 import type { NutrientProfile } from '../nutrition/types'
-import { computeDailyTotals, type CategoryServings } from '../calculations/totals'
+import { computeDailyTotals, emptyCategoryServings, type CategoryServings } from '../calculations/totals'
 import type { Food } from '../foods/types'
 
 export interface DaySnapshot {
@@ -57,15 +57,7 @@ export function lastNDays(snapshots: DaySnapshot[], n: number, throughDate: stri
           addedSugarG: 0,
           proteinG: 0,
         },
-        categoryServings: {
-          cookies: 0,
-          chocolate_candy: 0,
-          fast_food: 0,
-          sugary_drinks: 0,
-          desserts: 0,
-          snacks: 0,
-          other: 0,
-        },
+        categoryServings: emptyCategoryServings(),
         entryCount: 0,
       },
     )

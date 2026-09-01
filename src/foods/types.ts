@@ -1,6 +1,7 @@
 import type { NutrientProfile } from '../nutrition/types'
 
 export const FOOD_CATEGORIES = [
+  'water',
   'cookies',
   'chocolate_candy',
   'fast_food',

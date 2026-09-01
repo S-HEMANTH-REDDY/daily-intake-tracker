@@ -45,7 +45,7 @@ export function FoodSearch({
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Coke 500 mL, Diet Coke, Subway cookie, Hershey’s…"
+            placeholder="Water 500 mL, Chick-fil-A shake, Coke 500 mL, Diet Coke…"
             className="w-full rounded-2xl border border-line bg-card py-3.5 pr-4 pl-12 text-base outline-none ring-sage/0 transition focus:ring-2 focus:ring-sage/30"
           />
         </div>
