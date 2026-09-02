@@ -44,7 +44,7 @@ Local API needs the same env vars as production (see `.env.example`). Copy to `.
 Two fixed accounts. There is no signup and no “add person.”
 
 1. **Hemanth (Admin)** — can view either log and reset today or all logs.
-2. **Sreenidhee** — her own log only.
+
 
 Logs live in the shared database, so the same public URL is consistent on every phone and browser. PIN values are server env vars, not in this repo.
 
