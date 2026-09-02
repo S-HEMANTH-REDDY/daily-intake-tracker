@@ -8,6 +8,7 @@ export const SEED_USERS = [
     heightCm: null as number | null,
     weightKg: null as number | null,
     activityLevel: 'moderate' as const,
+    supplementTabletsGoal: 3,
     createdAt: '2026-08-30T00:00:00.000Z',
   },
   {
@@ -19,6 +20,7 @@ export const SEED_USERS = [
     heightCm: null as number | null,
     weightKg: null as number | null,
     activityLevel: 'moderate' as const,
+    supplementTabletsGoal: 3,
     createdAt: '2026-08-30T00:00:00.000Z',
   },
 ]

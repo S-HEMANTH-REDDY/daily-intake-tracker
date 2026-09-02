@@ -8,7 +8,7 @@ export async function loadUsers(): Promise<UserProfile[]> {
   await ensureSchema()
   const sql = getSql()
   const rows = await sql`
-    SELECT id, display_name, role, age, sex, height_cm, weight_kg, activity_level, created_at
+    SELECT id, display_name, role, age, sex, height_cm, weight_kg, activity_level, supplement_tablets_goal, created_at
     FROM users
     ORDER BY created_at ASC
   `
@@ -21,6 +21,8 @@ export async function loadUsers(): Promise<UserProfile[]> {
     heightCm: row.height_cm == null ? null : Number(row.height_cm),
     weightKg: row.weight_kg == null ? null : Number(row.weight_kg),
     activityLevel: (row.activity_level as UserProfile['activityLevel']) ?? 'moderate',
+    supplementTabletsGoal:
+      row.supplement_tablets_goal == null ? 1 : Math.min(20, Math.max(1, Number(row.supplement_tablets_goal))),
     createdAt: new Date(String(row.created_at)).toISOString(),
   }))
 }
@@ -123,6 +125,7 @@ export async function updateProfile(userId: string, patch: Partial<UserProfile>)
   const current = (await loadUsers()).find((u) => u.id === userId)
   if (!current) throw new Error('Unknown user')
   const next = { ...current, ...patch, id: userId }
+  const supplementGoal = Math.min(20, Math.max(1, Math.round(next.supplementTabletsGoal ?? 1)))
   await sql`
     UPDATE users SET
       display_name = ${next.displayName},
@@ -130,7 +133,8 @@ export async function updateProfile(userId: string, patch: Partial<UserProfile>)
       sex = ${next.sex},
       height_cm = ${next.heightCm},
       weight_kg = ${next.weightKg},
-      activity_level = ${next.activityLevel}
+      activity_level = ${next.activityLevel},
+      supplement_tablets_goal = ${supplementGoal}
     WHERE id = ${userId}
   `
   return loadUsers()

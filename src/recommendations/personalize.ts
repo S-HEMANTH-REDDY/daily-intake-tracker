@@ -163,6 +163,16 @@ export function waterGoalDerivation(user: UserProfile): string {
   return `Counts plain water bottles plus fluid from logged drinks (Diet Coke, Coke, milkshakes, etc.) — each drink’s mL is added automatically. Goal is ${ml.toLocaleString()} mL (≈ ${liters} L from drinks). ${sexNote} Needs rise with heat, exercise, and sweating (e.g. Florida). This is an app hydration goal, not a medical prescription.`
 }
 
+export function supplementTabletsGoal(user: UserProfile): number {
+  const raw = user.supplementTabletsGoal ?? 1
+  return Math.min(20, Math.max(1, Math.round(raw)))
+}
+
+export function supplementTabletsGoalDerivation(user: UserProfile): string {
+  const goal = supplementTabletsGoal(user)
+  return `Counts each logged item in the Vitamins & supplements catalog as 1 tablet (or the quantity you entered). Your daily goal is ${goal} tablet${goal === 1 ? '' : 's'} — change it on your Profile. This is a reminder tracker, not medical advice; follow your clinician’s regimen.`
+}
+
 export function buildCategoryGuidelines(user: UserProfile): CategoryGuideline[] {
   const sugarLimit = ahaAddedSugarLimitG(user)
 
@@ -227,6 +237,16 @@ export function buildCategoryGuidelines(user: UserProfile): CategoryGuideline[] 
       kind: 'app_guideline',
       derivation:
         'There is no official daily chip or cracker count. Two servings is an app threshold for tracking salty packaged snacks. Sodium and calorie totals are the evidence-based limits.',
+    },
+    {
+      category: 'supplements',
+      label: 'Tablets & vitamins',
+      emoji: '💊',
+      unit: 'tablets',
+      value: supplementTabletsGoal(user),
+      kind: 'app_guideline',
+      role: 'goal',
+      derivation: supplementTabletsGoalDerivation(user),
     },
   ]
 }

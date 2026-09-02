@@ -21,5 +21,7 @@ export interface UserProfile {
   heightCm: number | null
   weightKg: number | null
   activityLevel: ActivityLevel
+  /** How many vitamin/supplement tablets you aim to take per day (set on Profile). */
+  supplementTabletsGoal: number
   createdAt: string
 }

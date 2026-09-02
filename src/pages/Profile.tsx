@@ -141,6 +141,24 @@ export function ProfilePage() {
             ))}
           </select>
         </Field>
+        <Field label="Daily supplement goal (tablets)">
+          <input
+            type="number"
+            min={1}
+            max={20}
+            disabled={readOnly}
+            value={activeUser.supplementTabletsGoal ?? 1}
+            onChange={(e) =>
+              updateUser(activeUser.id, {
+                supplementTabletsGoal: Math.min(20, Math.max(1, Number(e.target.value) || 1)),
+              })
+            }
+            className="w-full rounded-2xl border border-line px-3 py-2.5 disabled:bg-parchment disabled:text-ink-soft"
+          />
+          <p className="mt-1.5 text-xs text-ink-soft">
+            Shown on Today as tablets logged vs this goal (multivitamin + D3 + magnesium, etc.).
+          </p>
+        </Field>
       </form>
 
       {isAdmin ? (

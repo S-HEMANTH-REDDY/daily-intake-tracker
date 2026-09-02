@@ -5,6 +5,7 @@ import { CategoryCard } from '../components/CategoryCard'
 import { DailySummary } from '../components/DailySummary'
 import { Disclaimer } from '../components/Disclaimer'
 import { FluidSummaryCard } from '../components/FluidSummaryCard'
+import { SupplementSummaryCard } from '../components/SupplementSummaryCard'
 import { FoodLog } from '../components/FoodLog'
 import { NutrientCard } from '../components/NutrientCard'
 import { shiftDateKey, todayKey } from '../calculations/dates'
@@ -14,7 +15,7 @@ import { foodsById } from '../foods/lookup'
 import { useDayData } from '../daily-log/useDayData'
 import { useLogPermissions } from '../hooks/useLogPermissions'
 import { useAdminViewingOther } from '../hooks/useAdminViewingOther'
-import { waterGoalDerivation, waterGoalMl } from '../recommendations/personalize'
+import { waterGoalDerivation, waterGoalMl, supplementTabletsGoalDerivation } from '../recommendations/personalize'
 import { useAppStore } from '../storage/context'
 
 function nutrientIntake(id: string, nutrients: NutrientProfile) {
@@ -48,6 +49,16 @@ export function DashboardPage() {
         return { guideline, intake, status }
       }),
     [guidelines, totals],
+  )
+
+  const junkCategoryRows = useMemo(
+    () => categoryRows.filter((row) => row.guideline.category !== 'supplements'),
+    [categoryRows],
+  )
+
+  const supplementRow = useMemo(
+    () => categoryRows.find((row) => row.guideline.category === 'supplements'),
+    [categoryRows],
   )
 
   const foodMap = useMemo(() => foodsById(store.customFoods), [store.customFoods])
@@ -128,6 +139,15 @@ export function DashboardPage() {
         derivation={waterGoalDerivation(store.activeUser)}
       />
 
+      {supplementRow ? (
+        <SupplementSummaryCard
+          intake={supplementRow.intake}
+          goal={supplementRow.guideline.value}
+          status={supplementRow.status}
+          derivation={supplementTabletsGoalDerivation(store.activeUser)}
+        />
+      ) : null}
+
       <div className="flex items-end justify-between">
         <h2 className="font-display text-2xl">Today&apos;s junk food</h2>
         {readOnly ? null : (
@@ -137,7 +157,7 @@ export function DashboardPage() {
         )}
       </div>
       <div className="grid gap-4 md:grid-cols-2">
-        {categoryRows.map((row) => (
+        {junkCategoryRows.map((row) => (
           <CategoryCard
             key={row.guideline.category}
             emoji={row.guideline.emoji}

@@ -53,6 +53,10 @@ async function setupSchema(): Promise<void> {
     )
   `
   await sql`CREATE INDEX IF NOT EXISTS logs_user_date ON logs (user_id, date)`
+  await sql`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS supplement_tablets_goal INTEGER NOT NULL DEFAULT 1
+  `
 
   for (const account of ACCOUNTS) {
     await sql`
