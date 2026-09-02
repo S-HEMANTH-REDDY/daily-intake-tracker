@@ -45,7 +45,7 @@ export function FoodSearch({
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Häagen-Dazs, Cold Stone, Ben & Jerry's, Diet Coke, water 500 mL…"
+            placeholder="multivitamin, magnesium, iron, Talenti, Diet Coke, water 500 mL…"
             className="w-full rounded-2xl border border-line bg-card py-3.5 pr-4 pl-12 text-base outline-none ring-sage/0 transition focus:ring-2 focus:ring-sage/30"
           />
         </div>

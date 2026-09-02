@@ -8,6 +8,7 @@ export const FOOD_CATEGORIES = [
   'sugary_drinks',
   'desserts',
   'snacks',
+  'supplements',
   'other',
 ] as const
 

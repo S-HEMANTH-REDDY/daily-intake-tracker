@@ -137,6 +137,7 @@ const TYPICAL_ADDED_SUGAR_G: Record<FoodCategory, number> = {
   sugary_drinks: 39,
   desserts: 15,
   snacks: 3,
+  supplements: 0,
   other: 10,
 }
 

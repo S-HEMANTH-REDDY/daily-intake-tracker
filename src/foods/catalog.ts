@@ -4,6 +4,7 @@ import { EXTRA_CHOCOLATE } from './catalog-chocolate'
 import { EXTRA_COOKIES } from './catalog-cookies'
 import { EXTRA_DRINKS } from './catalog-drinks'
 import { EXTRA_ICE_CREAM } from './catalog-ice-cream'
+import { EXTRA_SUPPLEMENTS } from './catalog-supplements'
 import { EXTRA_WATER } from './catalog-water'
 import { n } from './nutrients'
 
@@ -1119,6 +1120,7 @@ export const FOOD_CATALOG: Food[] = [
     },
   },
   ...EXTRA_WATER,
+  ...EXTRA_SUPPLEMENTS,
   ...EXTRA_CFA_SHAKES,
   ...EXTRA_ICE_CREAM,
   ...EXTRA_DRINKS,
@@ -1137,5 +1139,10 @@ export const CATEGORY_META: Record<
   sugary_drinks: { label: 'Soda & drinks', emoji: '🥤', blurb: 'Regular soda counts toward the drink limit; Diet/Zero do not' },
   desserts: { label: 'Desserts', emoji: '🍦', blurb: 'Häagen-Dazs, Ben & Jerry\'s, Cold Stone, bars, shakes, cake' },
   snacks: { label: 'Snacks', emoji: '🍿', blurb: 'Chips, crackers, popcorn' },
+  supplements: {
+    label: 'Vitamins & supplements',
+    emoji: '💊',
+    blurb: 'Multivitamins (standard & high potency), magnesium, iron, D3, CoQ10, melatonin, and more',
+  },
   other: { label: 'Other', emoji: '🍽️', blurb: 'Custom and uncategorized foods' },
 }
