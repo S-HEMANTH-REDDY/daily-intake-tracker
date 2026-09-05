@@ -6,7 +6,9 @@ import { LogPage } from './pages/Log'
 import { WaterPage } from './pages/Water'
 import { ProfilePage } from './pages/Profile'
 import { SourcesPage } from './pages/Sources'
+import { ShutdownPage } from './pages/Shutdown'
 import { AppProvider } from './storage/AppProvider'
+import { SITE_SHUTDOWN } from './siteStatus'
 
 const HistoryPage = lazy(async () => {
   const m = await import('./pages/History')
@@ -18,6 +20,10 @@ const CustomFoodPage = lazy(async () => {
 })
 
 export default function App() {
+  if (SITE_SHUTDOWN) {
+    return <ShutdownPage />
+  }
+
   return (
     <AppProvider>
       <BrowserRouter>
